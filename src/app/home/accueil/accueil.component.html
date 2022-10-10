@@ -1,0 +1,66 @@
+<p>accueil works!</p>
+<button type="button" class="btn btn-primary" (click)="modalService.show(template)">Create template modal</button>
+<carousel>
+    <slide>
+      <img width="30" src="assets/images/img1.jpg" alt="first slide" style="display: block; width: 70%;">
+      <div class="carousel-caption d-none d-md-block">
+        <h3>First slide label</h3>
+        <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+      </div>
+    </slide>
+    <slide>
+      <img width="30" src="assets/images/img2.jpg" alt="second slide" style="display: block; width: 70%;">
+      <div class="carousel-caption d-none d-md-block">
+        <h3>Second slide label</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+      </div>
+    </slide>
+    <slide>
+      <img width="30" src="assets/images/img3.jpg" alt="third slide" style="display: block; width: 70%;">
+      <div class="carousel-caption d-none d-md-block">
+        <h3>Third slide label</h3>
+        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+      </div>
+    </slide>
+  </carousel>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Modal</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalService.hide()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <carousel>
+        <slide>
+          <img width="30" src="assets/images/img1.jpg" alt="first slide" style="display: block; width: 70%;">
+          <div class="carousel-caption d-none d-md-block">
+            <h3>First slide label</h3>
+            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+          </div>
+        </slide>
+        <slide>
+          <img width="30" src="assets/images/img2.jpg" alt="second slide" style="display: block; width: 70%;">
+          <div class="carousel-caption d-none d-md-block">
+            <h3>Second slide label</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          </div>
+        </slide>
+        <slide>
+          <img width="30" src="assets/images/img3.jpg" alt="third slide" style="display: block; width: 70%;">
+          <div class="carousel-caption d-none d-md-block">
+            <h3>Third slide label</h3>
+            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+          </div>
+        </slide>
+      </carousel>
+  </div>
+  <div class="modal-footer">
+    <div class="form-group">
+      <button type="submit" class="btn btn-success"><i class="fa fa-database"></i> Se connecter</button>
+      <button type="button" class="btn btn-outline-dark ml-1" [mat-dialog-close] style="border: solid 2px black ;">
+              <i class="fa fa-close"></i> Close</button>
+    </div>
+  </div>
+</ng-template>

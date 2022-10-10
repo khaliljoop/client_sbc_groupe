@@ -1,0 +1,73 @@
+<h3>Please click on the below button open popup</h3>
+<hr />
+<button
+style="margin: 50px; padding: 10px"
+type="button"
+class="btn btn-primary"
+(click)="openPopup()">Show Data
+</button>
+<div
+class="modal"
+tabindex="-1"
+role="dialog"
+[ngStyle]="{'display':displayStyle}">
+<div class="modal-dialog" role="document">
+	<div class="modal-content">
+	<div class="modal-header">
+		<h4 class="modal-title">Connexion</h4>
+	</div>
+	<div class="modal-body">
+		
+    <div class="container">
+      <div class="row"></div>
+      <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-10 up_space">
+          <form action=""  [formGroup]="userForm" (ngSubmit)="getUsername()" ><!---getUsername()--->
+            <div class="input-group mb-5">
+               <span class="input-group-text" >Username</span>
+               <input type="text" class="form-control" formControlName ="username" placeholder="Username" >
+             </div>
+             <div class="input-group mb-5">
+               <span class="input-group-text" >Password</span>
+               <input type="password" class="form-control" formControlName="password"  placeholder="mot de passe" >
+             </div>
+             <button type="submit"  class="btn btn-primary" >Se connecter</button>
+             <button class="btn btn-success" ><a href="/register">S'inscrire</a></button>
+         </form>
+        </div>
+      </div>
+    </div>
+
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-danger"
+				(click)="closePopup()"><mat-icon>close</mat-icon>
+		
+		</button>
+	</div>
+	</div>
+</div>
+</div>
+
+
+<!--<div class="container">
+  <div class="row"></div>
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-5 up_space">
+      <form action=""  [formGroup]="userForm" (ngSubmit)="getUsername()" >
+        <div class="input-group mb-3">
+           <span class="input-group-text" >Username</span>
+           <input type="text" class="form-control" formControlName ="username" placeholder="Username" >
+         </div>
+         <div class="input-group mb-3">
+           <span class="input-group-text" >Password</span>
+           <input type="password" class="form-control" formControlName="password"  placeholder="mot de passe" >
+         </div>
+         <button type="submit"  class="btn btn-primary" >Se connecter</button>
+     </form>
+    </div>
+  </div>
+</div>-->
+

@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!--<title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
+</head>
+<button *ngIf="btn_default" type="button" style="margin: bottom 10px ;"
+class="btn btn-primary" (click)="openModal(template)" >Ajouter <span class="m-l-5"><i class="fa fa-plus-square"></i></span></button><!--(click)="vnew()" openModal(template) vnew()--openPopup()-->
+<button *ngIf="btn_vu" type="button" style="margin: bottom 10px ;"
+class="btn btn-primary" (click)="return()">Retour <span lass="m-l-5"><i class="fa fa-plus-square"></i></span></button>
+
+<!--<span [innerHTML]="alert.message"></span>-->
+<!---------------------------------- liste de vehicule -------------------------------------->
+<!--  class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">#</th>-->
+<div >
+  <table  class="table table-striped table-bordered table-sm row-border hover">
+    <thead>
+      <th scope="col">#</th><th scope="col">Matricule</th><th scope="col">description</th>
+      <th scope="col">type carburant</th><th scope="col">Marque</th><th scope="col">Image</th><th colspan="3" scope="col">action</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let v of vehicules; let i=index">
+        <td>{{i+1}}</td>
+        <td>{{v.matricule}}</td>
+        <td>{{v.description}}</td>
+        <td>{{v.type_carburant}}</td>
+        <td>{{v.id_marque}}</td>
+        <td><img src="{{base_url}}assets/images/{{v.imageList[0].url}}" alt="vehicule" width="100" height="60" srcset=""></td>
+        <td><mat-icon class="vu" (click)="getVById(v.id_vehicule,detail)">visibility</mat-icon></td><!-----openPopup1--getVById---->
+        <td><mat-icon style="color: blue ;" class="vu" (click)="editVehicule(v.id_vehicule)">edit</mat-icon></td><!--vdetail()-->
+        <button  mwlConfirmationPopover popoverTitle="Suppression"
+            popoverMessage="etes vous sùr de vouloir supprimer le vehicule de matricule {{v.matricule}} ?" 
+            (confirm)="delev(v.id_vehicule)" placement="auto" container='body' 
+            class="btn  btn-sm"><i style="color: red;" class="fa fa-trash-o fa-2x"></i>
+          </button>
+      </tr>
+    </tbody>
+    <tfoot>
+    </tfoot>
+  </table>
+<!---------------------------------- liste de vehicule -------------------------------------->
+</div>
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStyle}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">Parametrage</h4>
+    </div>
+    <div class="modal-body">
+
+      <div class="row">
+        <div class="col-lg-6">
+        <input type="file" accept="image/*" (change)="imagePreview($event)">
+          <div class="mt-5">
+                <mat-grid-list cols="4" rowHeight="1:1">
+                  <mat-grid-tile class="grille" *ngFor="let f of imgList; let i=index">
+                    <div *ngIf="f.url && f.url!== ''" style="position:relative;">
+                      <span class="btn-remove-image" (click)="removeImage(i)">X</span>
+                      <img [src]="f.url" [alt]="vForm.value.matricule" width="100px" height="100px">
+                    </div>
+                  </mat-grid-tile>
+                </mat-grid-list>
+          </div>
+        </div>
+        </div>
+    
+      <div class="row">
+        <div class="col-lg-7">
+        <form action="" [formGroup]="vForm" (ngSubmit)="onSubmitForm()">
+          <input  type="hidden" placeholder="" formControlName="id_vehicule">
+          <div class="input-group mb-3">
+            <span class="input-group-text" >Matricule</span>
+            <input type="text" class="form-control" formControlName ="matricule" placeholder="matricule" >
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" >Description</span>
+            <input type="text" class="form-control" formControlName ="description" placeholder="Description" >
+          </div>
+          <input type="hidden"  formControlName="created">
+          <input type="hidden"  formControlName="modified">
+          <input type="hidden"  formControlName="code_vehicule">
+          <div class="input-group mb-3">
+            <span class="input-group-text" >Marque</span>
+            <select  formControlName="id_marque" class="select-form" (change)="onMenuSelect()" >
+              <option  *ngFor="let m of marques" [ngValue]="m.id_marque">{{m.libelle}}</option>
+            </select>
+          </div>
+
+          <div class="input-group mb-3">
+            <span class="input-group-text" >Type de Carburants</span>
+            <select  formControlName="type_carburant" class="select-form" (change)="onMenuSelect()" >
+              <option   *ngFor="let c of carburants" [ngValue]="c.id_carburant">{{c.libelle}}</option>
+            </select>
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" >Type de Carburants</span>
+            <select matNativeControl  formControlName="statut" (change)="onMenuSelect()">
+              <option [ngValue]="pub"></option>
+              <option [ngValue]="vente">Vente</option>
+              <option [ngValue]="transport">Transport</option>
+              <option [ngValue]="location">Location</option>
+          </select>
+          </div>
+        <!----------------------------------------------------------------->        
+        <div align="end" *ngIf="!edit_click">
+          <button type="submit" mat-stroked-button color="primary">Ajouter</button>
+        </div>
+        <div align="end" *ngIf="edit_click">
+          <button type="submit" mat-stroked-button color="primary">Modifier</button>
+        </div>
+      </form>
+      </div>
+      </div>
+  
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger"
+          (click)="closePopup()"><mat-icon>close</mat-icon>
+      
+      </button>
+    </div>
+    </div>
+  </div>
+  </div>
+
+<!-----------------------nouveau vehicule---------------------> 
+<ng-template #template id="modal">
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Modal</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+      <span aria-hidden="true" class="visually-hidden"></span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-lg-7">
+        <form action="" [formGroup]="vForm" (ngSubmit)="onSubmitForm()">
+          <input  type="hidden" placeholder="" formControlName="id_vehicule">
+          <div class="input-group mb-3">
+            <span class="input-group-text" >Matricule</span>
+            <input type="text" class="form-control" formControlName ="matricule" placeholder="matricule" >
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" >Description</span>
+            <input type="text" class="form-control" formControlName ="description" placeholder="Description" >
+          </div>
+          <input type="hidden"  formControlName="created">
+          <input type="hidden"  formControlName="modified">
+          <input type="hidden"  formControlName="code_vehicule">
+          <div class="input-group mb-3">
+            <span class="input-group-text" >Marque</span>
+            <select  formControlName="id_marque" class="select-form" (change)="onMenuSelect()" >
+              <option  *ngFor="let m of marques" [ngValue]="m.id_marque">{{m.libelle}}</option>
+            </select>
+          </div>
+
+          <div class="input-group mb-3">
+            <span class="input-group-text" >Type de Carburants</span>
+            <select  formControlName="type_carburant" class="select-form" (change)="onMenuSelect()" >
+              <option   *ngFor="let c of carburants" [ngValue]="c.id_carburant">{{c.libelle}}</option>
+            </select>
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" >Type de Carburants</span>
+            <select matNativeControl  formControlName="statut" (change)="onMenuSelect()">
+              <option [ngValue]="pub"></option>
+              <option [ngValue]="vente">Vente</option>
+              <option [ngValue]="transport">Transport</option>
+              <option [ngValue]="location">Location</option>
+          </select>
+          </div>
+        <!----------------------------------------------------------------->        
+        <div align="end" *ngIf="!edit_click">
+          <button type="submit" mat-stroked-button color="primary">Ajouter</button>
+        </div>
+        <div align="end" *ngIf="edit_click">
+          <button type="submit" mat-stroked-button color="primary">Modifier</button>
+        </div>
+      </form>
+      </div>
+      <div class="col-lg-5">
+      <input type="file" accept="image/*" (change)="imagePreview($event)">
+        <div class="mt-5">
+              <mat-grid-list cols="2" >
+                <mat-grid-tile class="grille" *ngFor="let f of imgList; let i=index">
+                  <div *ngIf="f.url && f.url!== ''" style="position:relative;">
+                    <span class="btn-remove-image" (click)="removeImage(i)">X</span>
+                    <img [src]="f.url" [alt]="vForm.value.matricule" width="100px" height="100px">
+                  </div>
+                </mat-grid-tile>
+              </mat-grid-list>
+        </div>
+      </div>
+      </div>
+  </div>
+  <div class="modal-footer">
+    <div class="form-group">
+      <button type="button" class="btn btn-outline-dark ml-1" (click)="modalRef?.hide()" style="border: solid 2px black ;">
+              <i class="fa fa-close"></i> Close</button>
+    </div>
+  </div>
+</ng-template>
+
+                     <!-------------voir detail------------->
+
+  <ng-template #detail id="modal">
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Details</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+      <span aria-hidden="true" class="visually-hidden"></span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-lg-9">
+        <carousel>
+          <slide *ngFor="let imgs of imageLists;">
+            <img width="95%" src="assets/images/{{imgs.url}}" alt="first slide" style="display: block; ">
+            <div class="carousel-caption d-none d-md-block">
+              <h3>{{vehicule.matricule}}</h3>
+              <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+            </div>
+          </slide>
+        </carousel>
+      </div>
+      <div class="col-lg-3">
+        <h5>Description: {{vehicule.description}}</h5>
+        <h5>Marque: {{vehicule.id_marque}}</h5>
+        <h5>Type Carburant: {{vehicule.type_carburant}}</h5>
+      </div>
+    </div>
+    </div>
+  <div class="modal-footer">
+    <h1 class="pull-center">fermer</h1>
+  </div>
+  </ng-template>
+                     <!-------------fin voir detail--------->
+
+<div class="modal"tabindex="-1"role="dialog" [ngStyle]="{'display':displayStyle1}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title"><Details class="row">
+              <div class="col-lg-4">
+                <span> Matricule : {{vehicule.matricule}}</span>
+              </div>
+              <div class="col-lg-4">
+                <p>Type de carburant {{vehicule.type_carburant}}</p>
+              </div>
+              <div class="col-lg-4">
+                <p>Marque : {{vehicule.id_marque}}</p>
+              </div>
+              <div class="col-lg-6">
+                <p>Description :</p>
+                <p> {{vehicule.description}}</p>
+              </div>
+        </Details> </h4>
+      </div>
+      <div class="modal-body row">
+      
+       <!-- <div class="col-5">
+        <p> Matricule : {{matricules}}</p>
+        <p>Description :</p>
+        <p> {{descriptions}}</p>
+        <p>Type de carburant {{type_carburants}}</p>
+        <p>Marque : {{id_marques}}</p>
+          
+        </div>
+      <div class="col-7">
+        !--<div class="mt-5">
+          <p><img src="{{base_url}}assets/images/{{urlimg}}" alt="" srcset="" width="200" height="150"></p>
+        </div>-->
+       
+        <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="0">
+          <!-- Carousel indicators -->			
+          <!-- Wrapper for carousel items -->
+          <div class="carousel-inner" >
+            <div class="row">
+              <div class="col-sm-3" >
+                  <div class="img-box">
+                    <img src="{{base_url}}assets/images/{{urlimg}}" alt="" srcset="">
+                  </div>
+                  <div style="text-align: center; font-weight: bold;" class="thumb-content">
+                    <h3>nom vehicule</h3>
+                    <p class="item-price">100 FCFA<span> /mois</span></p>
+                    <button><a href="/detail" class="btn btn-primary"   >Voir details</a></button>
+                  </div>						
+              </div>
+              <div class="col-sm-3" >
+                <div class="img-box">
+                  <img src="{{base_url}}assets/images/{{urlimg}}" alt="" srcset="">
+                </div>
+                <div style="text-align: center; font-weight: bold;" class="thumb-content">
+                  <h3>nom vehicule</h3>
+                  <p class="item-price">100 FCFA<span> /mois</span></p>
+                  <button><a href="/detail" class="btn btn-primary"   >Voir details</a></button>
+                </div>						
+            </div>
+            </div>
+          </div>
+        </div>
+       
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger"
+          (click)="closePopup()"><mat-icon>close</mat-icon>
+      </button>
+    </div>
+    </div>
+  </div>
+</div>
+
+
+  
+  <!--
+
+    
+  
+  <div class="container mt-5">
+    <div class="card p-2">
+      <div class="row">
+       
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="container marg">
+  <div class="row">
+      <div>enregistrement de nouveau vehicule</div>
+      <hr>
+      <div class="col-sm-1"></div>
+      <form action="" [formGroup]="vForm" (ngSubmit)="onSubmitForm()"  >
+          <div class="row">
+            <div class="col-lg-4"></div>
+              <input type="hidden" formControlName="id_vehicule">
+              <div class="col-lg-4">
+                  <div class="input-group mb-3">
+                      <span class="input-group-text" id="matricule">Matricule</span>
+                      <input type="text" formControlName="matricule" class="form-control" placeholder="matricule" >
+                  </div>
+                  <div class="input-group mb-3">
+                      <span class="input-group-text" id="description">Description</span>
+                      <textarea  id="description" cols="30" rows="4" class="form-control" formControlName="description" placeholder="description"></textarea>
+                      
+                  </div>
+                  <input type="hidden" formControlName="created">
+                  <input type="hidden" formControlName="modified">
+                  <input type="hidden" formControlName="code_vehicule">
+                  <div class="input-group mb-4">
+                    <span class="input-group-text"  >Marque</span>
+                    <select  formControlName="id_marque" class="select-form" class="col-lg-5" >!--(change)="onMenuSelect()"--
+                     <option   [ngValue]=""></option>
+                     <option   [ngValue]="">M1</option>
+                     <option   [ngValue]="">M2</option>
+                   </select>
+                  </div>
+                  <div class="input-group mb-4">
+                    <span class="input-group-text"  >Type de carburant</span>
+                    <select  formControlName="type_carburant" class="select-form" class="col-lg-5" >!--(change)="onMenuSelect()"--
+                     <option   [ngValue]=""></option>
+                     <option   [ngValue]="">Marque</option>
+                     <option   [ngValue]="">Carburant</option>
+                   </select>
+                  </div>
+                  <div class="input-group mb-4">
+                    <span class="input-group-text" >Categorie</span>
+                    <select  formControlName="statut" class="select-form" class="col-lg-5" >!--(change)="onMenuSelect()"--
+                     <option   [ngValue]=""></option>
+                     <option   [ngValue]="">Vente</option>
+                     <option   [ngValue]="">Location</option>
+                     <option   [ngValue]="">Publication</option>
+                   </select>
+                  </div>
+                  <div class="input-group mb-3">
+                    <input type="file" formControlName="id_image" class="form-control" placeholder="" >
+                </div>
+
+              </div>
+              <div class="col-lg-4">
+                  <Marquee>Liste images</Marquee>
+                  
+              </div>
+          </div>
+
+         <div class="row">
+              <div class="col-lg-4"></div>
+              <div class="col-lg-5"> 
+                  <button type="submit" class="btn btn-primary" >Enregistrer</button>
+              </div>
+              <div class="col-lg-3"></div>
+         </div>
+     </form>
+  </div>
+</div>
+-->
+
+<!-----------------
+  <mdb-carousel [controls]="true" [indicators]="true" [animation]="'fade'">
+              <mdb-carousel-item>
+                <img
+                  src="https://mdbootstrap.com/img/Photos/Slides/img%20(15).webp"
+                  class="d-block w-100"
+                  alt="..."
+                />
+                <div class="carousel-caption d-none d-md-block">
+                  <h5>First slide label</h5>
+                  <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                </div>
+              </mdb-carousel-item>
+              <mdb-carousel-item>
+                <img
+                  src="https://mdbootstrap.com/img/Photos/Slides/img%20(22).webp"
+                  class="d-block w-100"
+                  alt="..."
+                />
+                <div class="carousel-caption d-none d-md-block">
+                  <h5>Second slide label</h5>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
+              </mdb-carousel-item>
+              <mdb-carousel-item>
+                <img
+                  src="https://mdbootstrap.com/img/Photos/Slides/img%20(23).webp"
+                  class="d-block w-100"
+                  alt="..."
+                />
+                <div class="carousel-caption d-none d-md-block">
+                  <h5>Third slide label</h5>
+                  <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                </div>
+              </mdb-carousel-item>
+            </mdb-carousel>
+  -------------->
+  
+  <!-------------------------
+    
+    <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="0">
+			!-- Carousel indicators --			
+			!-- Wrapper for carousel items --
+			<div class="carousel-inner" >
+				<div class="row">
+					<div class="col-sm-3" *ngFor="let bien of biens">
+							<div class="img-box">
+								<img style="width: 250px; height: 180px;" src="data:image/jpeg;base64,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" class="img-responsive img-fluid" alt="">
+							</div>
+							<div style="text-align: center; font-weight: bold;" class="thumb-content">
+								<h3>{{bien.nom}}</h3>
+								<p class="item-price">{{bien.prix}} FCFA<span> /mois</span></p>
+								<button><a href="/detail" class="btn btn-primary"  (click)="getBienByIdbien(bien.idbiens)" >Voir details</a></button>
+							</div>						
+					</div>
+				</div>
+			</div>
+		</div>
+    
+    ----------------------->
+  

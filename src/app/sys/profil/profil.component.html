@@ -1,0 +1,156 @@
+
+<div *ngIf="!isUpdate" class="row">
+    <div class="col-sm-12" style="margin-bottom: 30px">
+        <button (click)="addClicked()" type="button" id="btn_add" class="btn btn-primary">Ajouter 
+            <span lass="m-l-5"><i class="fa fa-plus-square"></i></span>
+        </button>
+    </div>
+</div>
+
+<div *ngIf="isUpdate" class="row">
+    <div class="col-sm-6" style="margin-bottom: 30px">
+        <button (click)="addClicked()" type="button" id="btn_add" class="btn btn-success">Enregistrer 
+            <span lass="m-l-5"><i class="fa fa-plus-square"></i></span>
+        </button>
+    </div>
+    <div class="col-sm-6" style="margin-bottom: 30px">
+        <button (click)="returnClicked()" type="button" id="btn_add" class="btn btn-primary">Retour 
+            <span lass="m-l-5"><i class="fa fa-plus-square"></i></span>
+        </button>
+    </div>
+</div>
+<!-------------------------Liste des profils------------------------------------->
+
+<div class="container">
+    <div *ngIf="!isAddClicked && !isUpdate">
+        <h2>Liste profil</h2>
+        <table class="table table-striped" class="table table-hover table-sm">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Code</th>
+                <th scope="col">libelle profil</th>
+                <th scope="col">Role</th>
+                <th scope="col">Modification</th>
+                <th scope="col">Suppression</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of profils; let i=index">
+                <td>{{p.id_profil}}</td>
+                <td>{{p.code}}</td>
+                <td>{{p.libelle}}</td>
+                <td><button (click)="getRoles(p.id_profil)"   class="btn btn-info btn-sm"><mat-icon >edit</mat-icon></button></td>
+                <td><button (click)="addClicked()"   class="btn btn-info btn-sm"><mat-icon >edit</mat-icon></button></td>
+                
+                <td><button mwlConfirmationPopover popoverTitle="Suppression"
+                    popoverMessage="Souhaiter-vous vraiment supprimer ce profil ?" 
+                    (confirm)="onDeleteClient(p.id_profil)"  placement="auto" container='body' 
+                  class="btn btn-danger btn-sm"><mat-icon >delete</mat-icon>
+                </button></td>  
+              </tr>
+            </tbody>
+          </table>
+    </div>
+    <div class="row"></div>
+    <div *ngIf="isAddClicked" class="row">
+        <h1>Nouveau profil</h1>
+      <div class="col-sm-2"></div>
+      <div class="col-sm-5 up_space">
+        <form action=""  [formGroup]="userForm" (ngSubmit)="onSaveMenu()" >
+            <div class="input-group mb-3">
+             <span class="input-group-text" >Code Profil</span>
+             <input type="text" class="form-control" formControlName ="code" placeholder="Code profil" >
+            </div>
+            <!--------------------------------------------------------------------------------------->
+            <div class="input-group mb-3">
+                <span class="input-group-text" >Libelle</span>
+                <input type="text" class="form-control" formControlName="libelle"  placeholder="libelle" >
+            </div>
+            <input type="hidden" value="1" formControlName="etat">
+           <div class="row">
+                <button  (click)="returnClicked()" type="submit"  class="btn btn-primary col-lg-4">Retour</button>
+                 
+                <div class="col-lg-2"></div>  
+                <button type="submit"  class="btn btn-primary col-lg-4">Enregistrer</button>
+                <div class="col-lg-2"></div>      
+                
+                    
+           </div>
+       </form>
+      </div>
+    </div>
+    <!-------------------------------- << Gestion des roles  >>-------------------------------------->
+    <div *ngIf="isUpdate" class="row">
+        
+        <!----liste menu -->
+        <div class="col-md-4">
+            <h3>Liste menu</h3>
+            <table>
+                <tr *ngFor="let m of menus; let i=index">
+                    <button (click)="getMenuById(m.id_menu)">{{m.libelle}}</button><hr>
+                </tr>
+            </table>
+        </div>
+
+         <!----liste sous menu et action -->
+         <div class="col-md-8" *ngIf="ismenuclick">
+            <h3>Gestion des roles pour le profil : {{profil.libelle}}</h3>
+            <table class="table table-striped" class="table table-hover table-sm">
+                <thead>
+                  <tr>
+                    <th scope="col"> <input type="checkbox" (change)="onCheckItem($event)"></th>
+                    <th scope="col">Sous menus</th>
+                    <th scope="col">Consulter</th>
+                    <th scope="col">Ajouter</th>
+                    <th scope="col">Modifier</th>
+                    <th scope="col">Supprimer</th>
+                  </tr>
+                </thead>
+                    <tbody>
+                          <tr *ngFor="let a of menuactions; let i=index" >
+                                <td> <input type="checkbox" (change)="onCheckItem($event)"></td> 
+                                <td>{{a.lib_smenu}}</td>
+                                <td >
+                                    <mat-checkbox name="d_read" [checked]="a.d_read==1 ? true : false"> Read</mat-checkbox>
+                                </td>
+                                <td>
+                                    <mat-checkbox name="d_add" [checked]="a.d_add==1 ? true : false"> add</mat-checkbox>
+                                </td>
+                                <td >
+                                    <mat-checkbox name="d_update" [checked]="a.d_update==1 ? true : false"> update</mat-checkbox>
+                                </td>
+                                <td >
+                                    <mat-checkbox name="d_del" [checked]="a.d_del==1 ? true : false"> delete</mat-checkbox>
+                                </td>
+                            </tr>
+                        <!--
+                            <tr *ngFor="let sm of smenus; let i=index"   >
+                            <td *ngIf="sm.id_menu==menu.id_menu"> <input type="checkbox" (change)="onCheckItem($event)"  ></td> 
+                            <td *ngIf="sm.id_menu==menu.id_menu">{{sm.libelle}}</td>
+                            <td *ngIf="sm.id_menu==menu.id_menu">
+                                <mat-checkbox [checked]="isSelectLine"> Read</mat-checkbox>
+                            </td>
+                            <td *ngIf="sm.id_menu==menu.id_menu">
+                                <mat-checkbox [checked]="isSelectLine"> add</mat-checkbox>
+                            </td>
+                            <td *ngIf="sm.id_menu==menu.id_menu">
+                                <mat-checkbox [checked]="isSelectLine"> update</mat-checkbox>
+                            </td>
+                            <td *ngIf="sm.id_menu==menu.id_menu">
+                                <mat-checkbox [checked]="isSelectLine"> delete</mat-checkbox>
+                            </td>
+                        </tr>
+                        -->
+                </tbody>
+            </table>
+            
+        </div>
+
+    </div>
+
+    <!-------------------------------->
+    
+</div>
+
+

@@ -1,0 +1,100 @@
+<!-------------------------------------------------------------->
+<div class="container">
+  <div class="row">
+    <div class=""></div>
+    <div class="col-sm-12" style="margin: 30px"><!------(click)="addClicked()"------>
+        <button  (click)="openModal(template)" type="button"  class="btn btn-primary">Ajouter 
+            <span lass="m-l-5"><i class="fa fa-plus-square"></i></span>
+        </button>
+    </div>
+  </div>
+  <h2>Liste de sous menu</h2>
+  <div class="table-responsive-md ">
+
+    <table   class="table table-striped table-bordered table-sm row-border hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Menu</th>
+          <th scope="col">Code</th>
+          <th scope="col">Sous menu</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let m of smenus; let i=index">
+          <td>{{m.id_smenu}}</td>
+          <td>{{m.id_menu}}</td>
+          <td>{{m.code}}</td>
+          <td>{{m.libelle}}</td>
+          <td><button (click)="addClicked()"   class="btn  btn-sm"><i style="color: blue; margin: auto;" class="fa fa-pencil-square fa-2x" ></i></button></td>
+          
+          <td><button  mwlConfirmationPopover popoverTitle="Suppression"
+            popoverMessage="etes vous sùr de vouloir supprimer le sous menu {{m.libelle}} ?" 
+            (confirm)="deleSmenu(m.id_smenu)" placement="auto" container='body' 
+            class="btn  btn-sm"><i style="color: red;" class="fa fa-trash-o fa-2x"></i>
+          </button></td>
+            <td><i  class="fa fa-eye fa-2x"></i></td>  
+        </tr>
+      </tbody>
+      <tfoot></tfoot>
+    </table>
+    <pagination [boundaryLinks]="showBoundaryLinks" 
+    [directionLinks]="showDirectionLinks" 
+    [totalItems]="contentArray.length"
+    [itemsPerPage]="5"
+    (pageChanged)="pageChanged($event)"></pagination>
+
+  </div>
+  
+
+  
+</div>
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Modal</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h1>Nouveau menu</h1>
+    <div class="col-sm-2"></div>
+    <div class="col-sm-10 up_spacee">
+      <form   [formGroup]="userForm" (ngSubmit)="onSaveSmenu()" >
+        <div class="input-group mb-3">
+          <span class="input-group-text" >menu</span>
+          <select  formControlName="id_menu" class="select-form" (change)="onMenuSelect()" >
+            <option  *ngFor="let m of menus" [ngValue]="m.id_menu">{{m.libelle}}</option>
+          </select>
+         </div>
+          <div class="input-group mb-3">
+           <span class="input-group-text" >Code menu</span>
+           <input type="text" class="form-control" formControlName ="code" placeholder="Code menu" >
+          </div>
+          <!--------------------------------------------------------------------------------------->
+          <div class="input-group mb-3">
+              <span class="input-group-text" >Libelle</span>
+              <input type="text" class="form-control" formControlName="libelle"  placeholder="libelle" >
+          </div>
+          <input type="hidden" value="1" formControlName="etat">
+          <input type="hidden" value="-1" formControlName="def">
+          <div class="row">
+            <button  (click)="returnClicked()" type="submit"  class="btn btn-primary col-sm-4">Retour</button>
+            <div class="col-sm-2"></div>
+            <button type="submit"  class="btn btn-primary col-sm-4">Enregistrer</button>       
+         
+        </div>
+     </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="form-group">
+      <button type="submit" class="btn btn-success"><i class="fa fa-database"></i> Se connecter</button>
+      <button type="button" class="btn btn-outline-dark ml-1" [mat-dialog-close] style="border: solid 2px black ;">
+              <i class="fa fa-close"></i> Close</button>
+    </div>
+  </div>
+</ng-template>
+
+
+

@@ -1,0 +1,116 @@
+<p>parametre works!</p>
+<div class="row">
+    <div class="col-sm-12" style="margin-bottom: 30px">
+        <button  type="button" id="btn_add" class="btn btn-primary" (click)="openPopup()" >Ajouter 
+            <span lass="m-l-5"><i class="fa fa-plus-square"></i></span>
+        </button>
+    </div>
+</div>
+<hr>
+<!-------------------------------------------------------------->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6" >
+            <h2>Liste de marque</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">libelle marque</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let m of marques; let i=index">
+                        <td>{{i+1}}</td>
+                        <td>{{m.libelle}}</td>
+                        <td><button   class="btn btn-info btn-sm"><mat-icon >edit</mat-icon></button></td>
+                        <!-- mwlConfirmationPopover popoverTitle="Suppression"
+                        popoverMessage="Souhaiter-vous vraiment vous supprimer ce bien ?" 
+                        (confirm)="" placement="auto" container='body' 
+                        class="btn btn-danger btn-sm"-->
+                        <td><button  ><mat-icon >delete</mat-icon>
+                        </button></td> 
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-lg-6" >
+            <h2>Liste de carburants</h2>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">libelle Carburants</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let c of carburants; let i=index">
+                    <td>{{i+1}}</td>
+                    <td>{{c.libelle}}</td>
+                    <td><button   class="btn btn-info btn-sm"><mat-icon >edit</mat-icon></button></td>
+                    
+                    <td><button><mat-icon >delete</mat-icon>
+                    </button></td> 
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!------------------------------------------  Ajout des parametres  ----------------------------------------->
+
+
+<!--<hr />
+<button
+style="margin: 50px; padding: 10px"
+type="button"
+class="btn btn-primary"
+(click)="openPopup()">Show Data
+</button>-->
+<div  class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStyle}">
+<div class="modal-dialog" role="document">
+	<div id="myModal" class="modal-content">
+	<div class="modal-header">
+		<h4 class="modal-title">Parametrage</h4>
+	</div>
+	<div class="modal-body">
+		
+    <div class="container">
+      <div class="row"></div>
+      <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-10 up_space">
+          <form action=""  [formGroup]="paramForm" (ngSubmit)="onSubmitForm()" ><!---->
+            <div class="input-group mb-5">
+               <span class="input-group-text" >Type</span>
+               <select  formControlName="type" class="select-form" (change)="onMenuSelect()"  ><!--(change)="onMenuSelect()"-->
+                <option   [ngValue]=""></option>
+                <option   [ngValue]="marque">Marque</option>
+                <option   [ngValue]="carburant">Carburant</option>
+              </select>
+             </div>
+             <div class="input-group mb-5">
+               <span class="input-group-text" >Libelle</span>
+               <input type="text" class="form-control" formControlName="libelle"  placeholder="libelle" >
+             </div>
+             <button type="submit"  class="btn btn-primary" >Enregistrer</button>
+         </form>
+        </div>
+      </div>
+    </div>
+
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-danger"
+				(click)="closePopup()"><mat-icon>close</mat-icon>
+		
+		</button>
+	</div>
+	</div>
+</div>
+</div>
+  
+
