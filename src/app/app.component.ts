@@ -8,15 +8,7 @@ import { delay, filter, Subscription } from 'rxjs';
 import { menu } from './model/menu';
 import { NavItem } from './model/nav-item';
 import { MediaObserver, MediaChange } from '@angular/flex-layout';
-/*
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
-})
-export class AppComponent {
-  title = 'sbc_projet';
-}*/
+
 @UntilDestroy()
 @Component({
   selector: 'app-root',
