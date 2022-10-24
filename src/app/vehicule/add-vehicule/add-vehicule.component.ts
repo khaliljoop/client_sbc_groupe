@@ -71,6 +71,7 @@ export class AddVehiculeComponent implements OnInit {
   transport="transport";
   public base_url!:string;
   marques!:Marque[];
+  marque:Marque=new Marque("");
   carburants!:Carburant[];
   vehicules:Vehicule[]=[];
   images:Image[]=[];
@@ -265,6 +266,15 @@ export class AddVehiculeComponent implements OnInit {
         this.vehicule=v;
         this.imageLists=v.imageList;
         this.urlimg=this.imageLists[0].url;
+        this.paramService.getParametreById("getMarqueById",v.id_marque).subscribe({
+          next:(p)=>{
+            this.marque=p;
+            console.log("libelle "+this.marque.libelle)
+          },
+          error(err) {
+            console.log("erreur getpbyid "+err)
+          },
+        });
         this.modalRef = this.modalService.show(detail,Object.assign({}, { class: 'gray modal-lg' }));
         console.log("liste img "+v.imageList[0].url);
         console.log("liste img 2 "+this.imageLists[0].url);

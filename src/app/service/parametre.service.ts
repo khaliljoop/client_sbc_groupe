@@ -22,4 +22,8 @@ export class ParametreService {
   public getParametres(chemin:string): Observable<any[]>{
     return this.http.get<any[]>(`${this.apiUrl+chemin}`);
 }
+
+public getParametreById(chemin:string,id:any): Observable<any>{
+  return this.http.get<any>(`${this.apiUrl+chemin}/${id}`);
+}
 }
