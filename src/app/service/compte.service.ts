@@ -37,9 +37,8 @@ public getPersonneByUsername(u: String): Observable<Personne>{
 }
 
 
-
 public getUserById(idpers: String): Observable<Personne>{
-  return this.http.get<Personne>(`${this.apiServiceUrl}/personne/`+idpers);
+  return this.http.get<Personne>(`${this.apiServiceUrl}personne/`+idpers);
 }
 /**
  * pour controler l'acces direct des appareil

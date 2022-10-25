@@ -19,7 +19,7 @@ export class UserComponent implements OnInit {
     private securiteService:SecuriteService
     ) { }
   users:Personne[]=[];
-  personne!:Personne;
+  personne:Personne=new Personne("","","","","","","","","","",0);
   profils:Profil[]=[];
   profile!:Profil;
   usersProfil:UserProfil[]=[];
@@ -56,13 +56,9 @@ export class UserComponent implements OnInit {
     });
   }
 
-  editeUser(id:any){
-    
-  }
+  editeUser(id:any){}
 
-  deleUser(id:any){
-
-  }
+  deleUser(id:any){}
 
   profil(uid:string){
     alert("unique id "+uid);
@@ -76,6 +72,7 @@ export class UserComponent implements OnInit {
     this.compteService.getUserById(id).subscribe({
       next:(pers)=>{
         this.personne=pers;
+        console.log("prenom "+this.personne.prenom);
       }
     });
     this.displayStyle = "block";
