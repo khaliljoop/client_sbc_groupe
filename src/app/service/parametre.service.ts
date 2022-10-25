@@ -11,7 +11,6 @@ export class ParametreService {
 
   private apiUrl=environment.baseUrl;
   public currentUrl = new BehaviorSubject<any>(undefined);
-
   constructor(private http:HttpClient,private router: Router) { }
 
   /***********************----------- tout element paarametrage --------------**********************************/

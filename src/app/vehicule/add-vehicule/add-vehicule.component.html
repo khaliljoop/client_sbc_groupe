@@ -39,7 +39,7 @@ class="btn btn-primary" (click)="return()">Retour <span lass="m-l-5"><i class="f
             popoverMessage="etes vous sùr de vouloir supprimer le vehicule de matricule {{v.matricule}} ?" 
             (confirm)="delev(v.id_vehicule)" placement="auto" container='body' 
             class="btn  btn-sm"><i style="color: red;" class="fa fa-trash-o fa-2x"></i>
-          </button>
+        </button>
       </tr>
     </tbody>
     <tfoot>
@@ -54,7 +54,6 @@ class="btn btn-primary" (click)="return()">Retour <span lass="m-l-5"><i class="f
       <h4 class="modal-title">Parametrage</h4>
     </div>
     <div class="modal-body">
-
       <div class="row">
         <div class="col-lg-6">
         <input type="file" accept="image/*" (change)="imagePreview($event)">
@@ -92,7 +91,6 @@ class="btn btn-primary" (click)="return()">Retour <span lass="m-l-5"><i class="f
               <option  *ngFor="let m of marques" [ngValue]="m.id_marque">{{m.libelle}}</option>
             </select>
           </div>
-
           <div class="input-group mb-3">
             <span class="input-group-text" >Type de Carburants</span>
             <select  formControlName="type_carburant" class="select-form" (change)="onMenuSelect()" >
@@ -234,7 +232,7 @@ class="btn btn-primary" (click)="return()">Retour <span lass="m-l-5"><i class="f
       <div class="col-lg-3">
         <h5>Description: {{vehicule.description}}</h5>
         <h5>Marque: {{marque.libelle}}</h5>
-        <h5>Type Carburant: {{vehicule.type_carburant}}</h5>
+        <h5>Type Carburant: {{type_carburant.libelle}}</h5>
       </div>
     </div>
     </div>

@@ -48,7 +48,6 @@ export class ProfilComponent implements OnInit {
     this.isUpdate=false;
     this.ismenuclick=false;
     this.isSelectLine=false;
-    
     this.securiteService.getElenents("getMenus").subscribe({
       next:(v)=>{
         this.menus=v;
@@ -117,7 +116,6 @@ export class ProfilComponent implements OnInit {
         console.log(" liste menu by id ",v);
         this.menu=v;
         this.ismenuclick=true;
-       
         this.securiteService.getElementsById("getSMenusByIdmenu",id).subscribe
         ({
           next:(smenus)=>{
@@ -179,13 +177,10 @@ export class ProfilComponent implements OnInit {
         console.log("rest delete "+v);
         this.getElenents("getProfils");
         this.getSmenu();
-
       },
       error:(e)=>{
         console.log("rest delete erreur "+e);
       }
-      
-      
     });
   }
   onCheckItem(e:any)

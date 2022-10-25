@@ -71,7 +71,8 @@ export class AddVehiculeComponent implements OnInit {
   transport="transport";
   public base_url!:string;
   marques!:Marque[];
-  marque:Marque=new Marque("");
+  marque!:Marque;//=new Marque("");
+  type_carburant!:Carburant;
   carburants!:Carburant[];
   vehicules:Vehicule[]=[];
   images:Image[]=[];
@@ -270,6 +271,15 @@ export class AddVehiculeComponent implements OnInit {
           next:(p)=>{
             this.marque=p;
             console.log("libelle "+this.marque.libelle)
+          },
+          error(err) {
+            console.log("erreur getpbyid "+err)
+          },
+        });
+        this.paramService.getParametreById("getCarburantById",v.type_carburant).subscribe({
+          next:(c)=>{
+            this.type_carburant=c;
+            console.log("libelle "+this.type_carburant.libelle)
           },
           error(err) {
             console.log("erreur getpbyid "+err)

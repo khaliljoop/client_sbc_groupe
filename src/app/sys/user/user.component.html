@@ -8,26 +8,78 @@
                 <th scope="col">Nom</th>
                 <th scope="col">Telephone</th>
                 <th scope="col">Mail</th>
-                <th scope="col">profile</th>
+                <th scope="col" colspan="2">profile</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let u of users; let i=index">
+              <tr *ngFor="let u of usersProfil; let i=index">
                 <td>{{i+1}}</td>
-                <td>{{u.prenom}}</td>
-                <td>{{u.nom}}</td>
-                <td>{{u.telephone}}</td>
-                <td>{{u.email}}</td>
-                <td></td>
-                <td><button (click)="editeUser(u.id_personne)"  class="btn btn-info btn-sm"><mat-icon >edit</mat-icon></button></td>
+                <td>{{u.personne.prenom}}</td>
+                <td>{{u.personne.nom}}</td>
+                <td>{{u.personne.telephone}}</td>
+                <td>{{u.personne.email}}</td>
+                <td>{{u.profil.libelle}}</td>
+                <td (click)="openPopup(u.personne.id_personne)"><i  class="vu fa fa-eye fa-2x"></i></td>
+                <td><button (click)="editeUser(u.personne.id_personne)"  class="btn btn-info btn-sm"><mat-icon >edit</mat-icon></button></td>
                 
                 <td><button   mwlConfirmationPopover popoverTitle="Suppression"
-                  popoverMessage="Souhaiter-vous vraiment  supprimer le menu {{u.prenom}}  {{u.nom}}?" 
-                  (confirm)="deleUser(u.id_personne)" placement="auto" container='body' 
+                  popoverMessage="Souhaiter-vous vraiment  supprimer le menu {{u.personne.prenom}}  {{u.personne.nom}}?" 
+                  (confirm)="deleUser(u.personne.id_personne)" placement="auto" container='body' 
                   class="btn btn-danger btn-sm" ><mat-icon >delete</mat-icon>
                 </button></td>
                   <td><button   class="btn btn-info btn-sm"><mat-icon >details</mat-icon></button></td>  
               </tr>
             </tbody>
           </table>
+
+          <!-------------------------------------------------->
+
+          <div
+class="modal"
+tabindex="-1"
+role="dialog"
+[ngStyle]="{'display':displayStyle}">
+<div class="modal-dialog" role="document">
+	<div class="modal-content">
+	<div class="modal-header">
+		<h4 class="modal-title">Gestion des profils</h4>
+	</div>
+	<div class="modal-body">
+    <h4>Utilisateur :{{personne.prenom}} {{personne.nom}}</h4>
+    <div class="container">
+      <div class="row"></div>
+      <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-10 up_space">
+          <form action=""  [formGroup]="userForm" (ngSubmit)="updateProfil()" ><!---getUsername()--->
+            <div class="input-group mb-5">
+               <span class="input-group-text" >Username</span>
+               <div *ngFor="let p of profils">
+                <label for="enum_answer_{{p.code}}">
+                  <input id="enum_answer_{{p.code}}" formControlName="profil"  [value]='p.id_profil' type="radio" name="profil" selected>
+                  {{p.libelle}}
+                </label>
+              </div>
+             </div>
+             <div class="input-group mb-5">
+               <span class="input-group-text" >Password</span>
+               <input type="password" class="form-control" formControlName="password"  placeholder="mot de passe" >
+             </div>
+             <button type="submit"  class="btn btn-primary" >Se connecter</button>
+             <button class="btn btn-success" ><a href="/register">S'inscrire</a></button>
+         </form>
+        </div>
+      </div>
+    </div>
+
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-danger"
+				(click)="closePopup()"><mat-icon>close</mat-icon>
+		
+		</button>
+	</div>
+	</div>
+</div>
+</div>
 </div>
