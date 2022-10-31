@@ -1,7 +1,7 @@
 
 <div *ngIf="!isUpdate" class="row">
     <div class="col-sm-12" style="margin-bottom: 30px">
-        <button (click)="addClicked()" type="button" id="btn_add" class="btn btn-primary">Ajouter 
+        <button (click)="openPopup()" type="button" id="btn_add" class="btn btn-primary">Ajouter 
             <span lass="m-l-5"><i class="fa fa-plus-square"></i></span>
         </button>
     </div>
@@ -40,47 +40,66 @@
                 <td>{{p.id_profil}}</td>
                 <td>{{p.code}}</td>
                 <td>{{p.libelle}}</td>
-                <td><button (click)="getRoles(p.id_profil)"   class="btn btn-info btn-sm"><mat-icon >edit</mat-icon></button></td>
-                <td><button (click)="addClicked()"   class="btn btn-info btn-sm"><mat-icon >edit</mat-icon></button></td>
+                <td><button (click)="getRoles(p.id_profil)"   class="btn btn-sm"><i class="fa fa-cog"></i></button></td>
+                <td><button (click)="edite_profil(p.id_profil)"   class="btn  btn-sm"><mat-icon style="color:blue ;">edit</mat-icon></button></td>
                 
                 <td><button mwlConfirmationPopover popoverTitle="Suppression"
-                    popoverMessage="Souhaiter-vous vraiment supprimer ce profil ?" 
+                    popoverMessage="Souhaiter-vous vraiment supprimer le profil : {{p.libelle}} ?" 
                     (confirm)="onDeleteClient(p.id_profil)"  placement="auto" container='body' 
-                  class="btn btn-danger btn-sm"><mat-icon >delete</mat-icon>
+                  class="btn btn-sm"><i style="color: red;" class="fa fa-trash-o fa-2x"></i>
                 </button></td>  
               </tr>
             </tbody>
           </table>
     </div>
     <div class="row"></div>
-    <div *ngIf="isAddClicked" class="row">
-        <h1>Nouveau profil</h1>
-      <div class="col-sm-2"></div>
-      <div class="col-sm-5 up_space">
-        <form action=""  [formGroup]="userForm" (ngSubmit)="onSaveMenu()" >
-            <div class="input-group mb-3">
-             <span class="input-group-text" >Code Profil</span>
-             <input type="text" class="form-control" formControlName ="code" placeholder="Code profil" >
+    <!----------------------------<< Nouveau vehicule modification >>-------------------------------->
+    <div  class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStyle}">
+        <div class="modal-dialog" role="document">
+            <div id="myModal" class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Profil</h4>
             </div>
-            <!--------------------------------------------------------------------------------------->
-            <div class="input-group mb-3">
-                <span class="input-group-text" >Libelle</span>
-                <input type="text" class="form-control" formControlName="libelle"  placeholder="libelle" >
+            <div class="modal-body">
+            <div class="container">
+                <div class="row"></div>
+                <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-7 up_space">
+                    <form action=""  [formGroup]="profilForm" (ngSubmit)="onSaveMenu()" >
+                        <div class="input-group mb-4">
+                        <span class="input-group-text" >Code Profil</span>
+                        <input type="hidden" class="form-control" formControlName ="id_profil" >
+                        <input type="text" class="form-control" formControlName ="code" placeholder="Code profil" >
+                        </div>
+                        <!--------------------------------------------------------------------------------------->
+                        <div class="input-group mb-4">
+                            <span class="input-group-text" >Libelle</span>
+                            <input type="text" class="form-control" formControlName="libelle"  placeholder="libelle" >
+                        </div>
+                        <input type="hidden" value="1" formControlName="etat">
+                    <div class="row"> 
+                            <button *ngIf="isAddClicked" type="submit"  class="btn btn-success col-lg-6">Enregistrer</button>
+                            <button *ngIf="!isAddClicked" type="submit"  class="btn btn-success col-lg-5">Modifier</button>
+                            <div class="col-lg-1"></div>   
+                    </div>
+                </form>
+                </div>
+                </div>
             </div>
-            <input type="hidden" value="1" formControlName="etat">
-           <div class="row">
-                <button  (click)="returnClicked()" type="submit"  class="btn btn-primary col-lg-4">Retour</button>
-                 
-                <div class="col-lg-2"></div>  
-                <button type="submit"  class="btn btn-primary col-lg-4">Enregistrer</button>
-                <div class="col-lg-2"></div>      
+        
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger"
+                        (click)="closePopup()"><mat-icon>close</mat-icon>
                 
-                    
-           </div>
-       </form>
-      </div>
+                </button>
+            </div>
+            </div>
+        </div>
     </div>
     <!-------------------------------- << Gestion des roles  >>-------------------------------------->
+    
     <div *ngIf="isUpdate" class="row">
         
         <!----liste menu -->
@@ -148,6 +167,7 @@
         </div>
 
     </div>
+    
 
     <!-------------------------------->
     

@@ -24,6 +24,14 @@ export class ParametreComponent implements OnInit {
     type="";
     marque="marque";
     carburant="carburant";
+    m_marque:Marque={
+      id_marque:0,
+      libelle:''
+    };
+    m_carburant:Carburant={
+      id_carburant:0,
+      libelle:''
+    };
 
   ngOnInit(): void {
     
@@ -35,6 +43,8 @@ export class ParametreComponent implements OnInit {
   initForm(){
     this.paramForm=this.formBuilder.group(
       {
+        id_marque:[0],
+        id_carburant:[0],
         type:['',Validators.required],
         libelle:['',Validators.required],
       }
@@ -43,42 +53,47 @@ export class ParametreComponent implements OnInit {
 
   onSubmitForm(){
     const formValue=this.paramForm.value;
-    const marque= new Marque(
+    this.m_carburant.id_carburant=formValue['id_carburant']
+    this.m_carburant.libelle=formValue['libelle']
+    this.m_marque.id_marque=formValue['id_marque']
+    this.m_marque.libelle=formValue['libelle']
+    /*const marque= new Marque(
       formValue['libelle']
     );
     const carburant= new Carburant(
       formValue['libelle']
-    );
+    );*/
     //alert('Type select =  '+formValue['type']+' libelle = '+formValue['libelle'])
     if(formValue['type']=='carburant')
     {
       
       
-        this.paramService.addParametre(carburant,"carburant/add").subscribe(
+        this.paramService.addParametre(this.m_carburant,"carburant/add").subscribe(
         {
           next:(v)=>{
-            this.initForm();
-            this.getCParametre("getCarburants");
+            this.ngOnInit();
+            this.router.navigate(["/param"]);
             console.log("carburant list "+this.carburants);
           },
-          error:(e)=>alert('Erreur de sauvegarde '+e.message),
+          error:(e)=>alert('Erreur de sauvegarde '+e),
         }
       );
     }
     else
     {
       
-      this.paramService.addParametre(marque,"marque/add").subscribe(
+      this.paramService.addParametre(this.m_marque,"marque/add").subscribe(
         {
           next:(v)=>{
-            this.initForm();
-            this.getMParametre("getMarques");
+            this.ngOnInit();
+            this.router.navigate(["/param"]);
             console.log("marque list "+this.marques);
           },
           error:(e)=>alert('Erreur de sauvegarde '+e.message),
         }
       );
     }
+    
   }
 
   navigate(){
@@ -110,8 +125,9 @@ export class ParametreComponent implements OnInit {
   }
 
   displayStyle = "none";
-  
+
   openPopup() {
+    this.initForm();
     this.displayStyle = "block";
   }
   closePopup() {
@@ -125,6 +141,55 @@ export class ParametreComponent implements OnInit {
   onMenuSelect()
   { 
   }
+
+  delete_marque(id:any){
+    this.paramService.deleteParam(id,"delete_marque").subscribe({
+      next:(v)=>{
+        this.getMParametre("getMarques");
+        this.router.navigate(['/param']);
+      },
+      error:(e)=>{}
+    });
+  }
+
+  edit_marque(id:any){
+    this.paramService.getParametreById("getMarqueById",id).subscribe({
+      next:(m)=>{
+        this.paramForm.controls['type'].setValue('marque');
+        this.paramForm.controls['id_marque'].setValue(m.id_marque);
+        this.paramForm.controls['libelle'].setValue(m.libelle);
+        this.displayStyle = "block";
+      },
+      error:(e)=>{}
+      
+    });
+  }
+
+  delete_carburant(id:any){
+    this.paramService.deleteParam(id,"delete_carburant").subscribe({
+      next:(v)=>{
+        this.getCParametre("getCarburants");
+        this.router.navigate(['/param']);
+      },
+      error:(e)=>{
+
+      }
+    });
+  }
+
+  edit_carburant(id:any){
+    this.paramService.getParametreById("getCarburantById",id).subscribe({
+      next:(c)=>{
+        this.paramForm.controls['type'].setValue('carburant');
+        this.paramForm.controls['id_carburant'].setValue(c.id_carburant);
+        this.paramForm.controls['libelle'].setValue(c.libelle);
+        this.displayStyle = "block";
+      },
+      error:(e)=>{}
+    });
+  }
+
+  
 
 
 }

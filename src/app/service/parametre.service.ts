@@ -25,4 +25,7 @@ export class ParametreService {
 public getParametreById(chemin:string,id:any): Observable<any>{
   return this.http.get<any>(`${this.apiUrl+chemin}/${id}`);
 }
+public deleteParam(id: any,chemin:string):Observable<any>{
+  return this.http.delete<any>(`${this.apiUrl+chemin}/${id}`);
+}
 }

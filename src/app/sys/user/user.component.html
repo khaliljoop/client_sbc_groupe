@@ -8,6 +8,7 @@
                 <th scope="col">Nom</th>
                 <th scope="col">Telephone</th>
                 <th scope="col">Mail</th>
+                <th scope="col">Identifiant</th>
                 <th scope="col" colspan="2">profile</th>
               </tr>
             </thead>
@@ -18,16 +19,16 @@
                 <td>{{u.personne.nom}}</td>
                 <td>{{u.personne.telephone}}</td>
                 <td>{{u.personne.email}}</td>
+                <td>{{u.personne.unique_id}}</td>
                 <td>{{u.profil.libelle}}</td>
-                <td (click)="openPopup(u.personne.id_personne)"><i  class="vu fa fa-eye fa-2x"></i></td>
-                <td><button (click)="editeUser(u.personne.id_personne)"  class="btn btn-info btn-sm"><mat-icon >edit</mat-icon></button></td>
+                <td (click)="openPopup(u.personne.id_personne,u.profil.id_profil)"><i  class="vu fa fa-eye fa-2x"></i></td>
+                <td><button (click)="editeUser(u.personne.id_personne)"  class="btn btn-sm"><mat-icon style="color: blue ;" class="vu" >edit</mat-icon></button></td>
                 
                 <td><button   mwlConfirmationPopover popoverTitle="Suppression"
                   popoverMessage="Souhaiter-vous vraiment  supprimer le menu {{u.personne.prenom}}  {{u.personne.nom}}?" 
                   (confirm)="deleUser(u.personne.id_personne)" placement="auto" container='body' 
-                  class="btn btn-danger btn-sm" ><mat-icon >delete</mat-icon>
-                </button></td>
-                  <td><button   class="btn btn-info btn-sm"><mat-icon >details</mat-icon></button></td>  
+                  class="btn  btn-sm" ><i style="color: red;" class="fa fa-trash-o fa-2x"></i>
+                </button></td>  
               </tr>
             </tbody>
           </table>
@@ -45,24 +46,22 @@
 		<h4 class="modal-title">Gestion des profils</h4>
 	</div>
 	<div class="modal-body">
-    <h4>Utilisateur : {{personne.prenom}} {{personne.nom}}</h4>
+    <h4>Utilisateur : {{personne.prenom}} {{personne.nom}} {{personne.unique_id}}</h4>
     <!----------------------<h4>Utilisateur :{{personne.prenom}} {{personne.nom}}</h4>---------------------->
     <div class="container">
       <div class="row"></div>
       <div class="row">
         <div class="col-sm-2"></div>
         <div class="col-sm-10 up_space">
-          <form action=""  [formGroup]="userForm" (ngSubmit)="updateProfil()" ><!---getUsername()--->
-            <div class="input-group mb-5">
+          <form action=""  [formGroup]="userForm" (ngSubmit)="updateProfil(personne.unique_id)" ><!---getUsername()--->
+            <div class="form-group mb-5">
                <div *ngFor="let p of profils">
-                <br>
-                <label for="enum_answer_{{p.code}}">
-                  <input id="enum_answer_{{p.code}}" formControlName="profil"  [value]='p.id_profil' type="radio" name="profil">
-                  {{p.libelle}}
-                </label><br>
+                  <input id="enum_answer_{{p.code}}" formControlName="user_profil"  value='{{p.id_profil}}' type="radio" name="profil" [checked]="p.id_profil==id_profil" (change)="changeProfil($event)">
+                  <span></span>
+                  <label class="radio inline" for="enum_answer_{{p.code}}">{{p.libelle}}  </label>
               </div>
-             </div>
-             <button type="submit"  class="btn btn-primary" >Enregistrer</button>
+            </div>
+             <button type="submit"  class="btn btn-success" >Enregistrer</button>
          </form>
         </div>
       </div>

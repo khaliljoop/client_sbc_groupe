@@ -110,7 +110,7 @@ export class AddVehiculeComponent implements OnInit {
           created:'',
           modified:'',
           code_vehicule:[''],
-          type_carburant:['',Validators.required],
+          type_carburant:[0,Validators.required],
           statut:[''],
           id_marque:[0],
           img: [null],
@@ -159,15 +159,16 @@ export class AddVehiculeComponent implements OnInit {
       this.vehicule.statut=formValue['statut'];
       this.vehicule.imageList=this.images;
       this.vehicule.id_marque=formValue['id_marque'];
-      console.log("vehicule save "+this.vehicule.code_vehicule+" et "+this.vehicule.created);
+      console.log("vehicule carburant "+this.vehicule.type_carburant+" et "+this.vehicule.created);
       this.vehiculeService.createimg(this.vehicule,"vehicule/addimg").subscribe(
         {
           next:(v)=>{
             //this.toastr.success( 'Validation Faite avec Success'); 
-            this.router.navigate(['/vehicule']);
+            
             this.getVehicule();
             this.imgList.splice(0,this.imgList.length);
             this.initForm();
+            this.router.navigate(['/vehicule']);
             
            // alert('vehicule cree'+v)
             //this.alertService.success('Ajout avec succes',this.options);

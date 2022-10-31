@@ -26,7 +26,7 @@
           <td>{{m.id_menu}}</td>
           <td>{{m.code}}</td>
           <td>{{m.libelle}}</td>
-          <td><button (click)="addClicked()"   class="btn  btn-sm"><i style="color: blue; margin: auto;" class="fa fa-pencil-square fa-2x" ></i></button></td>
+          <td><button (click)="edite_smenu(m.id_smenu,template)"   class="btn  btn-sm"><i style="color: blue; margin: auto;" class="fa fa-pencil-square fa-2x" ></i></button></td>
           
           <td><button  mwlConfirmationPopover popoverTitle="Suppression"
             popoverMessage="etes vous sùr de vouloir supprimer le sous menu {{m.libelle}} ?" 
@@ -78,10 +78,11 @@
           </div>
           <input type="hidden" value="1" formControlName="etat">
           <input type="hidden" value="-1" formControlName="def">
+          <input type="hidden"  formControlName="id_smenu">
           <div class="row">
-            <button  (click)="returnClicked()" type="submit"  class="btn btn-primary col-sm-4">Retour</button>
             <div class="col-sm-2"></div>
-            <button type="submit"  class="btn btn-primary col-sm-4">Enregistrer</button>       
+            <button *ngIf="isAddClicked" type="submit"  class="btn btn-success col-sm-4">Enregistrer</button>   
+            <button *ngIf="!isAddClicked" type="submit"  class="btn btn-success col-sm-4">Modifier</button>     
          
         </div>
      </form>

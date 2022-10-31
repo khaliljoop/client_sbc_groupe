@@ -77,9 +77,15 @@ public getElementByElement(chemin: String,profil?:any): Observable<any>{
 public getElementsById(chemin: String,profil?:any): Observable<any[]>{
   return this.http.get<any[]>(`${this.apiUrl+chemin}/${profil}`);
 }
-
+public getElementById(chemin: String,profil:any): Observable<any>{
+  return this.http.get<any>(`${this.apiUrl+chemin}/${profil}`);
+}
 public deleteElement(id: any,chemin:string):Observable<any>{
   return this.http.delete<any>(`${this.apiUrl+chemin}/${id}`);
+}
+
+public updateUser(chemin:string,uid:string,id_profil:number):Observable<any>{
+  return this.http.put<any>(`${this.apiUrl+chemin}/${uid}/${id_profil}`,null);
 }
  
 }

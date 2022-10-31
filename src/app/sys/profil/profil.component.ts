@@ -33,8 +33,14 @@ export class ProfilComponent implements OnInit {
   menus!:Menu[];
   smenus!:Smenu[];
   menu!:Menu;
+  p_profil:Profil={
+    id_profil:0,
+    code:'',
+    libelle:'',
+    etat:-1
+  }
 
-  userForm!:FormGroup;
+  profilForm!:FormGroup;
   isSelectLine!:boolean;
   isUpdate!:boolean;
   ismenuclick!:boolean;
@@ -58,7 +64,8 @@ export class ProfilComponent implements OnInit {
 
   initForm()
   {
-    this.userForm=this.formBuilder.group({
+    this.profilForm=this.formBuilder.group({
+      id_profil:[0],
       code:['',Validators.required],
       libelle:['',Validators.required],
       etat:['1']
@@ -80,13 +87,12 @@ export class ProfilComponent implements OnInit {
   }
 
   onSaveMenu(){
-    const form=this.userForm.value;
-    const profil=new Profil(
-      form['code'],
-      form['libelle'],
-      form['etat']
-    );
-    this.securiteService.addElement(profil,'profil/add').subscribe({
+    const form=this.profilForm.value;
+    this.p_profil.id_profil=form['id_profil'];
+    this.p_profil.code=form['code'];
+    this.p_profil.libelle=form['libelle'];
+    this.p_profil.etat=form['etat'];
+    this.securiteService.addElement(this.p_profil,'profil/add').subscribe({
       next:(v)=>{
        // alert('Ajout avec succès');
        //this.toast.success("Ajout avec succès");
@@ -213,7 +219,6 @@ export class ProfilComponent implements OnInit {
 
   getActionByElemnt(profil:any)
   {
-    
       this.securiteService.getElementsById("getActionByProfil",profil).subscribe({
         next:(v)=>{
           this.actions=v;
@@ -230,7 +235,7 @@ export class ProfilComponent implements OnInit {
   getRoles(id:any)
   {
     this.isUpdate=true;
-    this.securiteService.getElementBy("getProfilById",id,'id').subscribe({
+    this.securiteService.getElementById("getProfilById",id).subscribe({
       next:(v)=>{
         if(v!=null)
         {
@@ -240,6 +245,37 @@ export class ProfilComponent implements OnInit {
         }
       }
     });
+    this.displayStyle1 = "block";
+  }
+
+  edite_profil(id:any){
+    this.securiteService.getElementById("getProfilById",id).subscribe({
+      next:(p)=>{
+        this.profilForm.controls['id_profil'].setValue(p.id_profil);
+        this.profilForm.controls['code'].setValue(p.code);
+        this.profilForm.controls['libelle'].setValue(p.libelle);
+        this.profilForm.controls['etat'].setValue(p.etat);
+        console.log("lib profil "+p.libelle);
+      },
+      error:(e)=>{}
+    });
+    this.isAddClicked=false;
+    this.displayStyle = "block";
+  }
+
+  displayStyle = "none";
+  displayStyle1 = "none";
+
+  openPopup() {
+    this.isAddClicked=true;
+    this.initForm();
+    this.displayStyle = "block";
+  }
+  closePopup() {
+    this.ngOnInit();
+    this.router.navigate(['/profil']);
+    this.displayStyle = "none";
+    this.displayStyle1 = "none";
   }
 
 

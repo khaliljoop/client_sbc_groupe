@@ -34,6 +34,16 @@ export class AddMenuComponent implements OnInit {
   str!:string;
   menus!:Menu[];
   userForm!:FormGroup;
+  menu:Menu={
+    id_menu:0,
+    code:'',
+    libelle:'',
+    etat:-1,
+    smenu:[],
+    disabled:false,
+    route:''
+
+  }
   
   isAddClicked!:boolean;
   isCancelClicked!:boolean;
@@ -44,13 +54,21 @@ export class AddMenuComponent implements OnInit {
     this.isAddClicked=false;
   }
 
+  closeModal(){
+    this.ngOnInit();
+    this.route.navigate(['/addmenu']);
+    this.modalRef?.hide();
+  }
+
   openModal(template: TemplateRef<any>) {
+    this.isAddClicked=true;
     this.modalRef = this.modalService.show(template);
   }
 
   initForm()
   {
     this.userForm=this.formBuilder.group({
+      id_menu:[0],
       code:['',Validators.required],
       libelle:['',Validators.required],
       etat:['1']
@@ -70,16 +88,13 @@ export class AddMenuComponent implements OnInit {
   }
   onSaveMenu(){
     const form=this.userForm.value;
-    const menu=new Menu(
-      form['code'],
-      form['libelle'],
-      form['etat']
-    );
-    this.securiteService.addElement(menu,'menu/add').subscribe({
+    this.menu.id_menu=form['id_menu'];
+    this.menu.code=form['code'];
+    this.menu.libelle=form['libelle'];
+    this.securiteService.addElement(this.menu,'menu/add').subscribe({
       next:(v)=>{
        // this.toast.show("ajout menu","nouveau menu");
-        this.initForm();
-        this.getElenents("getMenus");
+       this.ngOnInit();
         this.route.navigate(["/addmenu"]);
       },
       error:(e)=>{
@@ -96,6 +111,22 @@ export class AddMenuComponent implements OnInit {
   {
     this.isAddClicked=false;
     this.getElenents("getMenus");
+  }
+  edite_menu(id:any,template: TemplateRef<any>){
+    this.isAddClicked=false;
+    this.securiteService.getElementById("getMenuById",id).subscribe({
+      next:(m)=>{
+        this.userForm.controls['id_menu'].setValue(m.id_menu);
+        this.userForm.controls['code'].setValue(m.code);
+        this.userForm.controls['libelle'].setValue(m.libelle);
+        this.userForm.controls['etat'].setValue(m.etat);
+        console.log("lib menu "+m.libelle);
+      },
+      error:(e)=>{
+
+      }
+    });
+      this.modalRef = this.modalService.show(template);
   }
 
   deleMenu(id:any)

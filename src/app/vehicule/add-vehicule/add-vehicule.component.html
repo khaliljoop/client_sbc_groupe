@@ -158,7 +158,6 @@ class="btn btn-primary" (click)="return()">Retour <span lass="m-l-5"><i class="f
               <option  *ngFor="let m of marques" [ngValue]="m.id_marque">{{m.libelle}}</option>
             </select>
           </div>
-
           <div class="input-group mb-3">
             <span class="input-group-text" >Type de Carburants</span>
             <select  formControlName="type_carburant" class="select-form" (change)="onMenuSelect()" >
@@ -166,7 +165,7 @@ class="btn btn-primary" (click)="return()">Retour <span lass="m-l-5"><i class="f
             </select>
           </div>
           <div class="input-group mb-3">
-            <span class="input-group-text" >Type de Carburants</span>
+            <span class="input-group-text" >Catégories</span>
             <select matNativeControl  formControlName="statut" (change)="onMenuSelect()">
               <option [ngValue]="pub"></option>
               <option [ngValue]="vente">Vente</option>

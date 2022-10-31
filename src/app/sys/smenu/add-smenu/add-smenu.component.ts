@@ -48,6 +48,14 @@ export class AddSmenuComponent implements OnInit {
   profils!:Profil[];
   menus!:Menu[];
   idmenu!: Menu;
+  smenu:Smenu={
+    id_smenu:0,
+    id_menu:0,
+    code:'',
+    libelle:'',
+    etat:-1,
+    route:''
+  }
   
   private adminAction=1;
   private defaultAction=-1;
@@ -77,6 +85,7 @@ export class AddSmenuComponent implements OnInit {
  }
 
   openModal(template: TemplateRef<any>) {
+    this.isAddClicked=true;
     this.getElenentsM("getMenus");
     this.modalRef = this.modalService.show(template);
   }
@@ -93,7 +102,8 @@ export class AddSmenuComponent implements OnInit {
   initForm()
   {
     this.userForm=this.formBuilder.group({
-      id_menu:[''],
+      id_smenu:[0],
+      id_menu:[0],
       code:['',Validators.required],
       libelle:['',Validators.required],
       etat:['1'],
@@ -134,15 +144,14 @@ export class AddSmenuComponent implements OnInit {
 
   onSaveSmenu(){
     const form=this.userForm.value;
-    const smenu=new Smenu(
-      form['code'],
-      form['libelle'],
-      form['etat'],
-      form['id_menu']
-    );
+    this.smenu.id_smenu=form['id_smenu'];
+    this.smenu.code=form['code'];
+    this.smenu.id_menu=form['id_menu'];
+    this.smenu.libelle=form['libelle'];
+    this.smenu.etat=form['etat'];
     //this.onSaveAction(smenu);
     console.log("id_menu_verifi ",form['id_menu'],);
-    this.securiteService.addElement(smenu,'smenu/add').subscribe({
+    this.securiteService.addElement(this.smenu,'smenu/add').subscribe({
       next:(v)=>{
         this.onSaveAction(v.id_smenu,form['etat'],form['def']);
         console.log("msenu id verifi ",v.id_smenu);
@@ -229,6 +238,22 @@ export class AddSmenuComponent implements OnInit {
         alert('erreur de suppression');
       }
     });
+  }
+
+  edite_smenu(id:any,template: TemplateRef<any>){
+    this.securiteService.getElementById("getSMenuById",id).subscribe({
+      next:(sm)=>{
+        this.userForm.controls['id_smenu'].setValue(sm.id_smenu);
+        this.userForm.controls['id_menu'].setValue(sm.id_menu);
+        this.userForm.controls['code'].setValue(sm.code);
+        this.userForm.controls['libelle'].setValue(sm.libelle);
+        this.userForm.controls['etat'].setValue(sm.etat);
+        
+        console.log("id_menu "+sm.id_menu);
+      }
+    });
+    this.isAddClicked=false;
+    this.modalRef = this.modalService.show(template);
   }
 
 

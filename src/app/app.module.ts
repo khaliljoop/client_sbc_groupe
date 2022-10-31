@@ -10,7 +10,8 @@ import { MatDialogModule,MatDialogRef, } from '@angular/material/dialog';
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { MatGridListModule } from '@angular/material/grid-list';
 import { HttpClientModule} from '@angular/common/http';
-
+import { ToastrModule } from 'ngx-toastr';
+//import { ToastrService } from 'ngx-toastr';
 //import { FlexLayoutModule } from '@angular/flex-layout';
 import { ConfirmationPopoverModule } from 'angular-confirmation-popover'; 
 import { MatIconModule } from '@angular/material/icon';
@@ -62,6 +63,7 @@ import { UserComponent } from './sys/user/user.component';
     MatCheckboxModule,
     MatDialogModule,
     MatTabsModule,
+    ToastrModule.forRoot(),
     HttpClientModule,
     MatSidenavModule,
     MatListModule,

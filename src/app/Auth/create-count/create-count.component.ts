@@ -59,8 +59,10 @@ export class CreateCountComponent implements OnInit {
     this.compteService.addPersonne(newUser).subscribe(
       {
         next:(v)=>{
-          this.securiteService.addElement(new User(1,""),"user/add").subscribe({
-            
+          this.securiteService.addElement(new User(2,uniqueid),"user/add").subscribe({
+            next:(value)=> {
+              this.route.navigate(['/login']);
+            },
           });
           this.initForm();
         },

@@ -24,14 +24,13 @@
                 <td>{{m.id_menu}}</td>
                 <td>{{m.code}}</td>
                 <td>{{m.libelle}}</td>
-                <td><button (click)="addClicked()"   class="btn btn-info btn-sm"><mat-icon >edit</mat-icon></button></td>
+                <td><button (click)="edite_menu(m.id_menu,template)"   class="btn  btn-sm"><mat-icon style="color:blue ;" >edit</mat-icon></button></td>
                 
                 <td><button   mwlConfirmationPopover popoverTitle="Suppression"
                   popoverMessage="Souhaiter-vous vraiment  supprimer le menu {{m.libelle}} ?" 
                   (confirm)="deleMenu(m.id_menu)" placement="auto" container='body' 
-                  class="btn btn-danger btn-sm" ><mat-icon >delete</mat-icon>
-                </button></td>
-                  <td><button   class="btn btn-info btn-sm"><mat-icon >details</mat-icon></button></td>  
+                  class="btn btn-sm" ><i style="color: red;" class="fa fa-trash-o fa-2x"></i>
+                </button></td> 
               </tr>
             </tbody>
           </table>
@@ -41,7 +40,7 @@
     <ng-template #template>
       <div class="modal-header">
         <h4 class="modal-title pull-left">Modal</h4>
-        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeModal()">
           <span aria-hidden="true" class="visually-hidden">&times;</span>
         </button>
       </div>
@@ -50,6 +49,7 @@
           <form action=""  [formGroup]="userForm" (ngSubmit)="onSaveMenu()" >
               <div class="input-group mb-3">
                <span class="input-group-text" >Code menu</span>
+               <input type="hidden" name="id_menu" formControlName ="id_menu" id="">
                <input type="text" class="form-control" formControlName ="code" placeholder="Code menu" >
               </div>
               <!--------------------------------------------------------------------------------------->
@@ -59,17 +59,16 @@
               </div>
               <input type="hidden" value="1" formControlName="etat">
              <div class="row">
-                  <button  (click)="returnClicked()" type="submit"  class="btn btn-primary col-sm-4">Retour</button>
                   <div class="col-sm"></div>
-                  <button type="submit"  class="btn btn-primary col-sm">Enregistrer</button>       
+                  <button *ngIf="isAddClicked" type="submit"  class="btn btn-success col-sm">Enregistrer</button> 
+                  <button *ngIf="!isAddClicked" type="submit"  class="btn btn-success col-sm">Modifier</button>       
              </div>
          </form>
         </div>
       </div>
       <div class="modal-footer">
         <div class="form-group">
-          <button type="submit" class="btn btn-success"><i class="fa fa-database"></i> Se connecter</button>
-          <button type="button" class="btn btn-outline-dark ml-1" [mat-dialog-close] style="border: solid 2px black ;">
+          <button type="button" class="btn btn-outline-dark ml-1" (click)="closeModal()" style="border: solid 2px black ;">
                   <i class="fa fa-close"></i> Close</button>
         </div>
       </div>
