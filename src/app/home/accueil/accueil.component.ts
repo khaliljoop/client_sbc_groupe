@@ -17,4 +17,8 @@ export class AccueilComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  show_detail(){
+    alert("detail clicked");
+  }
+
 }
