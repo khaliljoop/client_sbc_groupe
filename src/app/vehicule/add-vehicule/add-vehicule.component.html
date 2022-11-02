@@ -207,7 +207,7 @@ class="btn btn-primary" (click)="return()">Retour <span lass="m-l-5"><i class="f
 
                      <!-------------voir detail------------->
 
-  <ng-template #detail id="modal">
+  <ng-template #detail >
   <div class="modal-header">
     <h4 class="modal-title pull-left">Details</h4>
     <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
@@ -215,12 +215,12 @@ class="btn btn-primary" (click)="return()">Retour <span lass="m-l-5"><i class="f
     </button>
   </div>
 
-  <div class="modal-body">
-    <div class="row">
+  <div class="modal-body" id="modal_detail">
+    <div class="row" >
       <div class="col-lg-9">
         <carousel>
           <slide *ngFor="let imgs of imageLists;">
-            <img width="95%" src="assets/images/{{imgs.url}}" alt="first slide" style="display: block; ">
+            <img width="90%" src="assets/images/{{imgs.url}}" alt="first slide" style="display: block; ">
             <div class="carousel-caption d-none d-md-block">
               <h3>{{vehicule.matricule}}</h3>
               <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>

@@ -248,14 +248,10 @@ export class AddSmenuComponent implements OnInit {
         this.userForm.controls['code'].setValue(sm.code);
         this.userForm.controls['libelle'].setValue(sm.libelle);
         this.userForm.controls['etat'].setValue(sm.etat);
-        
         console.log("id_menu "+sm.id_menu);
       }
     });
     this.isAddClicked=false;
     this.modalRef = this.modalService.show(template);
   }
-
-
-
 }

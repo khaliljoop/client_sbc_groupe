@@ -10,7 +10,6 @@
   </div>
   <h2>Liste de sous menu</h2>
   <div class="table-responsive-md ">
-
     <table   class="table table-striped table-bordered table-sm row-border hover">
       <thead>
         <tr>
@@ -90,8 +89,7 @@
   </div>
   <div class="modal-footer">
     <div class="form-group">
-      <button type="submit" class="btn btn-success"><i class="fa fa-database"></i> Se connecter</button>
-      <button type="button" class="btn btn-outline-dark ml-1" [mat-dialog-close] style="border: solid 2px black ;">
+      <button type="button" class="btn btn-outline-dark ml-1" (click)="modalRef?.hide()" style="border: solid 2px black ;">
               <i class="fa fa-close"></i> Close</button>
     </div>
   </div>

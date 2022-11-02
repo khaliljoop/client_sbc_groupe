@@ -97,6 +97,8 @@ export class AddVehiculeComponent implements OnInit {
     }
 
     openModal(template: TemplateRef<any>) {
+      this.imgList=[];
+      this.images=[];
       this.getParametre("getMarques","getCarburants");
       this.modalRef = this.modalService.show(template,Object.assign({}, { class: 'gray modal-lg' }));
     }
@@ -120,32 +122,7 @@ export class AddVehiculeComponent implements OnInit {
         }
       );
     }
-  
-    /**convertImageTobase64String(){
-       let inputFile:HTMLInputElement;
-      inputFile=<HTMLInputElement>document.getElementById("image");
-      let reader=new FileReader();
-      if(inputFile!=null)
-     { if(inputFile?.files!?.length>0)
-      {
-        reader.readAsDataURL(inputFile?.files![0]);
-        reader.onloadend=()=>{
-          this.base64=reader.result!?.toString();
-          this.image.id_image=0;
-          this.image.url=this.base64.split(",")[1];
-          this.image.code_vehicule+="code_v";
-          let img =new Image(this.image.url,"code_v");
-          this.images.push(img);
-          console.log("taille fichier "+this.images.length);
-          
-        }
-      }
-      else
-      {
-        console.log("empty file ");
-      }
-    }
-    }*/
+
     onSubmitForm(){
       const formValue=this.vForm.value;
       var code_vehicule= this.compteService.generateKey(8);
@@ -206,26 +183,6 @@ export class AddVehiculeComponent implements OnInit {
       this.images.splice(i,1);
       this.imgList.splice(i,1);
     }
-
-    /*
-    onFileChanged(event:any) {
-      const files = event.target.files;
-      if (files.length === 0)
-          return;
-      const mimeType = files[0].type;
-      if (mimeType.match(/image\/*) == null) {
-          //this.message = "Only images are supported.";
-          return;
-      }
-      const reader = new FileReader();
-      //this.imagePath = files;
-      reader.readAsDataURL(files[0]); 
-      reader.onload = (_event) => { 
-        this.urlimg+= reader.result; 
-          this.base64=this.urlimg.split(",")[1]
-          alert("url "+reader.result);
-      }
-  }*/
 
   displayStyle = "none";
   displayStyle1 = "none";
@@ -296,10 +253,6 @@ export class AddVehiculeComponent implements OnInit {
     });
   }
   editVehicule(id:any) {
-    /*this.edit_click=true;
-    this.btn_default=false;
-    this.btn_edit=false;
-    this.btn_vu=false;*/
     this.vehiculeService.findById("getVehicule",id).subscribe({
       next:(v)=>{
         this.vForm.controls['id_vehicule'].setValue(v.id_vehicule);
@@ -319,7 +272,6 @@ export class AddVehiculeComponent implements OnInit {
         let img2 =new Image(this.filePath,"code_v");
           this.images.push(img);
           this.imgList.push(img2);
-
         this.vehicule=v;
         this.imageLists=v.imageList;
         this.urlimg=this.imageLists[0].url;
@@ -333,6 +285,8 @@ export class AddVehiculeComponent implements OnInit {
     this.displayStyle= "block";
   }
   closePopup() {
+    this.imgList=[];
+    this.images=[];
     this.displayStyle = "none";
     this.displayStyle1 = "none";
   }
