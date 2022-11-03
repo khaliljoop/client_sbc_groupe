@@ -9,87 +9,79 @@
 </header>
 
 <div class="row">
-  <div class="col-lg-4">
+  <div class="col-lg-4 bordure" >
     <h1>Location</h1>
     <carousel>
-      <slide>
-        <img width="50" src="assets/images/img1.jpg" alt="first slide" style="display: block; width: 100%;">
+      <slide *ngFor="let v of v_locations;">
+        <img width="50" src="assets/images/{{v.imageList[0].url}}" alt="first slide" style="display: block;  width: 100%;">
         <div class="carousel-caption d-none d-md-block">
-          <h3>First slide label</h3>
-          <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-        </div>
-      </slide>
-      <slide>
-        <img width="50" src="assets/images/img2.jpg" alt="second slide" style="display: block; width: 100%;">
-        <div class="carousel-caption d-none d-md-block">
-          <h3>Second slide label</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-        </div>
-      </slide>
-      <slide>
-        <img width="50" src="assets/images/img5.jpg" alt="third slide" style="display: block; width: 100%;">
-        <div class="carousel-caption d-none d-md-block">
-          <h3>Third slide label</h3>
-          <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+          <h3>{{v.matricule}}</h3>
+          <button class="btn btn-success" (click)="openPopup(v.id_vehicule)">Voir detail</button>
         </div>
       </slide>
     </carousel>
-
   </div>
-  <div class="col-lg-4">
+  <div class="col-lg-4 bordure">
     <h1>Transport</h1>
+
     <carousel>
-      <slide>
-        <img width="20" src="assets/images/img4.jpg" alt="first slide" style="display: block; width: 100%;">
+      <slide *ngFor="let v of v_transport;">
+        <img width="50" src="assets/images/{{v.imageList[0].url}}" alt="first slide" style="display: block;  width: 100%;">
         <div class="carousel-caption d-none d-md-block">
-          <h3>First slide label</h3>
-          <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-        </div>
-      </slide>
-      <slide>
-        <img width="20" src="assets/images/img2.jpg" alt="second slide" style="display: block; width: 100%;">
-        <div class="carousel-caption d-none d-md-block">
-          <h3>Second slide label</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-        </div>
-      </slide>
-      <slide>
-        <img width="20" src="assets/images/img3.jpg" alt="third slide" style="display: block; width: 100%;">
-        <div class="carousel-caption d-none d-md-block">
-          <h3>Third slide label</h3>
-          <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+          <h3>{{v.matricule}}</h3>
+          <button class="btn btn-success" (click)="openPopup(v.id_vehicule)">Voir detail</button>
         </div>
       </slide>
     </carousel>
 
   </div>
-  <div class="col-lg-4">
+  <div class="col-lg-4 bordure">
     <h1>Vente</h1>
     <carousel>
-      <slide>
-        <img width="20" src="assets/images/img3.jpg" alt="first slide" style="display: block; width: 100%;">
+      <slide *ngFor="let v of v_ventes;">
+        <img width="50" src="assets/images/{{v.imageList[0].url}}" alt="first slide" style="display: block;  width: 100%;">
         <div class="carousel-caption d-none d-md-block">
-          <h3>First slide label</h3>
+          <h3>{{v.matricule}}</h3>
           <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-        </div>
-      </slide>
-      <slide>
-        <img width="20" src="assets/images/img2.jpg" alt="second slide" style="display: block; width: 100%;">
-        <div class="carousel-caption d-none d-md-block">
-          <h3>Second slide label</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-        </div>
-      </slide>
-      <slide>
-        <img width="20" src="assets/images/img1.jpg" alt="third slide" style="display: block; width: 100%;">
-        <div class="carousel-caption d-none d-md-block">
-          <h3>Third slide label</h3>
-          <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-          <button class="" (click)="show_detail()">voir detail</button>
+          <button class="btn btn-success" (click)="openPopup(v.id_vehicule)">Voir detail</button>
         </div>
       </slide>
     </carousel>
 
+  </div>
+</div>
+
+<!----------------------------------- <<  -----  >> ----------------------------------------->
+<div  class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStyle}">
+  <div class="modal-dialog" role="document">
+      <div id="myModal" class="modal-content">
+      <div class="modal-header">
+          <h4 class="modal-title">Details</h4>
+      </div>
+      <div class="modal-body">
+      <div class="container">
+          <div class="row">
+            <h3>Matricule : {{detail_v.matricule}}</h3>
+            <p>{{detail_v.matricule}}</p>
+            <carousel>
+              <slide *ngFor="let img of detail_v.imageList;">
+                <img width="50" src="assets/images/{{img.url}}" alt="first slide" style="display: block;  width: 100%;">
+                <div class="carousel-caption d-none d-md-block">
+                  <p>a afficher</p>
+                </div>
+              </slide>
+            </carousel>
+          </div>
+      </div>
+  
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-danger"
+                  (click)="closePopup()"><mat-icon>close</mat-icon>
+          
+          </button>
+      </div>
+      </div>
   </div>
 </div>
 

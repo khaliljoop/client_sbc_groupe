@@ -20,6 +20,10 @@ export class VehiculeService {
     return this.http.post(`${this.baseUrl+chemin}`, list,data);
   }
 
+  getVByCategorie(chemin:string,id:any): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl+chemin}/${id}`);
+  }
+
   createimg(data: any,chemin:string): Observable<any> {
     return this.http.post(`${this.baseUrl+chemin}`, data);
   }

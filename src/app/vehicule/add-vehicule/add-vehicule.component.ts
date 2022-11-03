@@ -27,19 +27,7 @@ import { CarouselConfig } from 'ngx-bootstrap/carousel';
   ]
 })
 export class AddVehiculeComponent implements OnInit {
-  vehicule: Vehicule = {
-    id_vehicule:0,
-    matricule: '',
-    description: '',
-    created:new Date,
-    modified:new Date,
-    code_vehicule:'',
-    type_carburant:0,
-    statut:'',
-    imageList:[],
-    id_marque:0
-   
-  };
+  
     modalRef?: BsModalRef;
     dismissible = true;
     btn_default:boolean=true;
@@ -70,15 +58,34 @@ export class AddVehiculeComponent implements OnInit {
   location="location";
   transport="transport";
   public base_url!:string;
-  marques!:Marque[];
-  marque!:Marque;//=new Marque("");
-  type_carburant!:Carburant;
-  carburants!:Carburant[];
+  marques:Marque[]=[{id_marque:0,libelle:''}];
+  marque:Marque={
+    id_marque:0,
+    libelle:''
+  };//=new Marque("");
+  type_carburant:Carburant={
+    id_carburant:0,
+    libelle:''
+  };
+  carburants:Carburant[]=[{id_carburant:0,libelle:''}];
   vehicules:Vehicule[]=[];
   images:Image[]=[];
   imgList:Image[]=[];
   filePath!: string;
   myForm!: FormGroup;
+  vehicule: Vehicule = {
+    id_vehicule:0,
+    matricule: '',
+    description: '',
+    created:new Date,
+    modified:new Date,
+    code_vehicule:'',
+    type_carburant:0,
+    statut:'',
+    imageList:[],
+    id_marque:0
+   
+  };
   constructor(private modalService: BsModalService,private matDialog: MatDialog,private vehiculeService: VehiculeService,private compteService:CompteService,private formBuilder:FormBuilder,
     private router :Router,private paramService:ParametreService) { }/**,private toastr: ToastrService */
     public vForm! : FormGroup;
@@ -92,6 +99,8 @@ export class AddVehiculeComponent implements OnInit {
       this.getParametre("getMarques","getCarburants");
       this.initForm();
       this.getVehicule();
+      
+      console.log("type carburant "+this.vehicule.type_carburant)
       /***************************table******************************** */
       
     }
@@ -99,7 +108,9 @@ export class AddVehiculeComponent implements OnInit {
     openModal(template: TemplateRef<any>) {
       this.imgList=[];
       this.images=[];
+      
       this.getParametre("getMarques","getCarburants");
+      console.log("carburant "+this.vehicule.type_carburant)
       this.modalRef = this.modalService.show(template,Object.assign({}, { class: 'gray modal-lg' }));
     }
 
@@ -132,10 +143,11 @@ export class AddVehiculeComponent implements OnInit {
       this.vehicule.created=new Date();
       this.vehicule.modified=new Date();
       this.vehicule.code_vehicule=code_vehicule;
-      this.vehicule.type_carburant=formValue['type_carburant'];
+      this.vehicule.type_carburant=formValue['type_carburant']!=0?formValue['type_carburant']:this.vehicule.type_carburant;
+      this.vehicule.id_marque=formValue['id_marque']!=0?formValue['id_marque']:this.vehicule.id_marque;
       this.vehicule.statut=formValue['statut'];
       this.vehicule.imageList=this.images;
-      this.vehicule.id_marque=formValue['id_marque'];
+      
       console.log("vehicule carburant "+this.vehicule.type_carburant+" et "+this.vehicule.created);
       this.vehiculeService.createimg(this.vehicule,"vehicule/addimg").subscribe(
         {
@@ -312,7 +324,7 @@ export class AddVehiculeComponent implements OnInit {
       next:(m)=>{
         this.marques=m;
         console.log("marque list "+this.marques);
-
+        this.vehicule.id_marque=this.marques[0].id_marque;
       },
       error:(e)=>alert("erreur de recuperation des parametres "+e.message),
       
@@ -320,6 +332,7 @@ export class AddVehiculeComponent implements OnInit {
     this.paramService.getParametres(carburant).subscribe({
       next:(c)=>{
         this.carburants=c;
+        this.vehicule.type_carburant=this.carburants[0].id_carburant;
         console.log("c list "+this.carburants);
 
       },
