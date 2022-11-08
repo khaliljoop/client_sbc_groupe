@@ -1,5 +1,16 @@
     
     /*******************************************************/
+    mat-toolbar {
+      justify-content: space-between;
+    }
+    
+    .profile-image-toolbar {
+      border-radius: 100%;
+      margin-right: 8px;
+    }
+    .vu{
+      cursor: pointer;
+  }
     .badge-wrapper {
       position: relative;
   }
@@ -50,7 +61,12 @@
           background: #004a9f;
           color: white;
       }
-  
+      .mycolor{
+        color: white;
+      }
+      .notif{
+        color: #ff5100;
+      }
       /*
       mat-sidenav {
         margin: 16px;
@@ -68,9 +84,7 @@
         border-radius: 10px;
         margin: 16px;
         margin-left: 32px;
-      
         padding: 16px;
-      
         overflow: auto;
       }
   
@@ -89,7 +103,6 @@
         align-items: center;
         justify-content: flex-start;
         font-size: 1rem;
-      
         mat-icon {
           margin-right: 8px;
         }

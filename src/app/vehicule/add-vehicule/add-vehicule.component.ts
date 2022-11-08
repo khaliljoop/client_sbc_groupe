@@ -171,21 +171,20 @@ export class AddVehiculeComponent implements OnInit {
 
     imagePreview(e:any) {
       const file = (e.target as HTMLInputElement).files![0];
-  
       this.vForm.patchValue({
         img: file
       });
-  
+      console.log("file "+file)
       const reader = new FileReader();
       reader.onload = () => {
         this.filePath = reader.result as string;
         let img =new Image(this.filePath.split(",")[1],"code_v");
         let img2 =new Image(this.filePath,"code_v");
-          this.images.push(img);
-          this.imgList.push(img2);
-          console.log("taille : imgList=>"+this.imgList.length+" images "+this.images.length);
-          console.log("url img:"+this.imgList[0].url);
-          console.log("url images:"+this.images[0].url);
+        this.images.push(img);
+        this.imgList.push(img2);
+        console.log("taille : imgList=>"+this.imgList.length+" images "+this.images.length);
+        console.log("url img:"+this.imgList[0].url);
+        console.log("url images:"+this.images[0].url);
       }
       reader.readAsDataURL(file)
     }
@@ -282,8 +281,8 @@ export class AddVehiculeComponent implements OnInit {
         this.filePath = reader.result as string;
         let img =new Image(this.filePath.split(",")[1],"code_v");
         let img2 =new Image(this.filePath,"code_v");
-          this.images.push(img);
-          this.imgList.push(img2);
+        this.images.push(img);
+        this.imgList.push(img2);
         this.vehicule=v;
         this.imageLists=v.imageList;
         this.urlimg=this.imageLists[0].url;

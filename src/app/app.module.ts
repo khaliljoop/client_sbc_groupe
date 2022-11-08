@@ -32,6 +32,7 @@ import { ProfilComponent } from './sys/profil/profil.component';
 import { AddMenuComponent } from './sys/menu/add-menu/add-menu.component'; 
 import { AddSmenuComponent } from './sys/smenu/add-smenu/add-smenu.component';
 import { LoginComponent } from './Auth/login/login.component'; 
+import { MatMenuModule } from '@angular/material/menu';
 import { CreateCountComponent } from './Auth/create-count/create-count.component';
 import { UserComponent } from './sys/user/user.component'; 
 
@@ -62,6 +63,7 @@ import { UserComponent } from './sys/user/user.component';
     MatToolbarModule,
     MatCheckboxModule,
     MatDialogModule,
+    MatMenuModule,
     MatTabsModule,
     ToastrModule.forRoot(),
     HttpClientModule,

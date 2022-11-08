@@ -18,14 +18,14 @@ import { MediaObserver, MediaChange } from '@angular/flex-layout';
 export class AppComponent implements OnInit,OnDestroy{
   @ViewChild(MatSidenav)
   sidenav!: MatSidenav;
-  public opened: boolean = true;
-    private mediaWatcher!: Subscription;
-    public menu: NavItem[] = menu;
+  opened: boolean = true;
+  mediaWatcher!: Subscription;
+  public menu: NavItem[] = menu;
 
     constructor(private media: MediaObserver,private observer: BreakpointObserver, private router: Router) {
         /*this.mediaWatcher = this.media.media$.subscribe((mediaChange: MediaChange) => {
             this.handleMediaChange(mediaChange);
-        })*/
+            */
     }
     ngOnInit(): void {
      // this.base_url=environment.localUrl;

@@ -3,7 +3,7 @@ import { NavItem } from './nav-item';
 export let menu: NavItem[] = [
   {
     displayName: 'Dashboard',
-    iconName: 'fa fa-home',
+    iconName: 'fa-solid fa-grid-2',
     route: ''
   },
   {
