@@ -17,6 +17,7 @@ import { environment } from 'src/environments/environment';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { CarouselConfig } from 'ngx-bootstrap/carousel';
+import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 
 @Component({
   selector: 'app-add-vehicule',
@@ -43,6 +44,15 @@ export class AddVehiculeComponent implements OnInit {
     statuts!:string;
     imageLists!:Image[];
     id_marques!:0;
+    search=''
+    
+    startItem=0
+    endItem=6
+    pageReturn?:Vehicule[];
+    filterVehicules:Vehicule[]=[];
+    totalItems = this.filterVehicules.length;
+    currentPage = 1;
+    smallnumPages = 0;
   /************KKkkk */
   urlimg:string='';
   base64: String='';
@@ -73,6 +83,7 @@ export class AddVehiculeComponent implements OnInit {
   imgList:Image[]=[];
   filePath!: string;
   myForm!: FormGroup;
+  
   vehicule: Vehicule = {
     id_vehicule:0,
     matricule: '',
@@ -99,10 +110,15 @@ export class AddVehiculeComponent implements OnInit {
       this.getParametre("getMarques","getCarburants");
       this.initForm();
       this.getVehicule();
-      
-      console.log("type carburant "+this.vehicule.type_carburant)
+      console.log("tail filter "+this.filterVehicules.length+" debut: "+this.startItem+" fin: "+this.endItem)
       /***************************table******************************** */
       
+    }
+
+    pageChanged(event: PageChangedEvent): void {
+      this.startItem = (event.page - 1) * event.itemsPerPage;
+      this.endItem = event.page * event.itemsPerPage;
+      this.filterVehicules = this.vehicules.slice(this.startItem, this.endItem);
     }
 
     openModal(template: TemplateRef<any>) {
@@ -157,8 +173,9 @@ export class AddVehiculeComponent implements OnInit {
             this.getVehicule();
             this.imgList.splice(0,this.imgList.length);
             this.initForm();
+            this.imgList=[];
+            this.images=[];
             this.router.navigate(['/vehicule']);
-            
            // alert('vehicule cree'+v)
             //this.alertService.success('Ajout avec succes',this.options);
           },
@@ -308,6 +325,8 @@ export class AddVehiculeComponent implements OnInit {
       next:(values)=> {
         if(values!=null)
         this.vehicules=values;
+        //this.filterVehicules=values
+        this.filterVehicules = this.vehicules.slice(this.startItem, this.endItem);
         console.log("images liste "+values);
         console.log("images liste 2 "+this.vehicule);
       },
@@ -365,6 +384,23 @@ export class AddVehiculeComponent implements OnInit {
   }
   onMenuSelect()
   { 
+  }
+
+  filter(){
+    if(this.search==''){
+      this.filterVehicules=this.vehicules;
+    }
+    else{
+      var _search=this.search.toLowerCase().split('é').join('e').split('è').join('e')
+      this.filterVehicules=[]
+      for(let v of this.vehicules){
+        var matricule=v.matricule.toLowerCase().split('é').join('e').split('è').join('e')
+        var code_v =v.code_vehicule.toLowerCase().split('é').join('e').split('è').join('e')
+        var statut =v.statut.toLowerCase().split('é').join('e').split('è').join('e')
+        if(matricule.includes(_search) || code_v.includes(_search) || statut.includes(_search))
+        this.filterVehicules.push(v)
+      }
+    }
   }
   
 

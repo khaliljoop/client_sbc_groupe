@@ -8,10 +8,8 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
 </head>
-<button *ngIf="btn_default" type="button" style="margin: bottom 10px ;"
-class="btn btn-primary" (click)="openModal(template)" >Ajouter <span class="m-l-5"><i class="fa fa-plus-square"></i></span></button><!--(click)="vnew()" openModal(template) vnew()--openPopup()-->
-<button *ngIf="btn_vu" type="button" style="margin: bottom 10px ;"
-class="btn btn-primary" (click)="return()">Retour <span lass="m-l-5"><i class="fa fa-plus-square"></i></span></button>
+
+
 
 <!--<span [innerHTML]="alert.message"></span>-->
 <!---------------------------------- liste de vehicule -------------------------------------->
@@ -19,19 +17,37 @@ class="btn btn-primary" (click)="return()">Retour <span lass="m-l-5"><i class="f
             <thead>
               <tr>
                 <th scope="col">#</th>-->
-<div >
+<div class="row hauteur" >
+  <div class="col-lg-9">
+    <button  type="button" style="margin: bottomm 10px ;"
+class="btn btn-primary" (click)="openModal(template)" >Ajouter 
+<span class="m-l-5"><i class="fa fa-plus-square"></i></span>
+</button>
+  </div>
+  <div class="col-lg-3">
+    <div class="input-group">
+      
+    <input (input)="filter()" placeholder="matricule,catégorie,..." class="form-control" type="text" [(ngModel)]="search" name="search">
+    <span class="input-group-text"><i class="fa fa-search"></i></span>
+    </div>
+  </div>
+</div>
+<div class="row"></div>
+<div>
+  
   <table  class="table table-striped table-bordered table-sm row-border hover">
     <thead>
       <th scope="col">#</th><th scope="col">Matricule</th><th scope="col">description</th>
-      <th scope="col">type carburant</th><th scope="col">Marque</th><th scope="col">Image</th><th colspan="3" scope="col">action</th>
+      <th scope="col">type carburant</th><th scope="col">Marque</th><th>Categorie</th><th scope="col">Image</th><th colspan="3" scope="col">action</th>
     </thead>
     <tbody>
-      <tr *ngFor="let v of vehicules; let i=index">
+      <tr *ngFor="let v of filterVehicules; let i=index">
         <td>{{i+1}}</td>
         <td>{{v.matricule}}</td>
         <td>{{v.description}}</td>
         <td>{{v.type_carburant}}</td>
         <td>{{v.id_marque}}</td>
+        <td>{{v.statut}}</td>
         <td><img src="{{base_url}}assets/images/{{v.imageList[0].url}}" alt="vehicule" width="100" height="60" srcset=""></td>
         <td><mat-icon class="vu" (click)="getVById(v.id_vehicule,detail)">visibility</mat-icon></td><!-----openPopup1--getVById---->
         <td><mat-icon style="color: blue ;" class="vu" (click)="editVehicule(v.id_vehicule)">edit</mat-icon></td><!--vdetail()-->
@@ -45,6 +61,12 @@ class="btn btn-primary" (click)="return()">Retour <span lass="m-l-5"><i class="f
     <tfoot>
     </tfoot>
   </table>
+
+  <div class="row">
+    <div class="d-flex justify-content-center"><!--- [itemsPerPage]="4"----(numPages)="smallnumPages = $event"----[(ngModel)]="currentPage"--->
+      <pagination  [totalItems]="vehicules.length" [itemsPerPage]="6"   (pageChanged)="pageChanged($event)"></pagination>
+    </div>
+  </div>
 <!---------------------------------- liste de vehicule -------------------------------------->
 </div>
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStyle}">
