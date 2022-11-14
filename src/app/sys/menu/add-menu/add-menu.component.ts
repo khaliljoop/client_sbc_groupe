@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {PageEvent} from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { PageChangedEvent } from 'ngx-bootstrap/pagination';
+import { Mpagination } from 'src/app/model/param/mpagination.model';
 //import { ToastrService } from 'ngx-toastr';
 import { Menu } from 'src/app/model/sys/menu.model';
 import { GlobalService } from 'src/app/service/global.service';
@@ -27,6 +29,17 @@ export class AddMenuComponent implements OnInit {
     ) { 
      // this.config.size = 'sm';
     //this.config.boundaryLinks = true;
+    }
+
+    search=""
+    filtermenus:Menu[]=[]
+    List_filer:Menu[]=[]
+    mpagination:Mpagination={
+      tab_taille:0,
+      nb_line:5,
+      startItem:0,
+      endItem:5,
+      totalItems : this.filtermenus.length
     }
     
   modalRef?: BsModalRef;
@@ -80,8 +93,9 @@ export class AddMenuComponent implements OnInit {
     this.securiteService.getElenents(chemin).subscribe({
       next:(v)=>{
         this.menus=v;
-        console.log("menu : "+this.menus.length);
-        console.log("menu s : "+v.length)
+        this.mpagination.tab_taille=this.menus.length
+        this.filtermenus = this.menus.slice(this.mpagination.startItem, this.mpagination.endItem);
+        
       },
       error:(e)=>alert("erreur de recuperation "+e.message),
     });
@@ -148,6 +162,38 @@ export class AddMenuComponent implements OnInit {
         alert('erreur de suppression');
       }
     });
+  }
+
+  pageChanged(event: PageChangedEvent): void {
+    this.mpagination.startItem = (event.page - 1) * event.itemsPerPage;
+    this.mpagination.endItem = event.page * event.itemsPerPage;
+    this.filtermenus = this.menus.slice(this.mpagination.startItem, this.mpagination.endItem);
+  }
+
+  onLineSelect()
+  { 
+    this.filtermenus = this.menus.slice(this.mpagination.startItem , this.mpagination.startItem+this.mpagination.nb_line);
+  }
+  filter(){
+    
+    if(this.search==''){
+      this.filtermenus=this.menus.slice(this.mpagination.startItem , this.mpagination.startItem+this.mpagination.nb_line)
+      this.mpagination.tab_taille=this.menus.length
+    }
+    else{
+      var _search=this.search.toLowerCase().split('é').join('e').split('è').join('e')
+      this.filtermenus=[]
+      this.List_filer=[]
+      for(let p of this.menus){
+        var lib=p.libelle.toLowerCase().split('é').join('e').split('è').join('e')
+        var code_v =p.code.toLowerCase().split('é').join('e').split('è').join('e')
+        if(lib.includes(_search) || code_v.includes(_search) )
+        this.List_filer.push(p)
+       
+      }
+      this.mpagination.tab_taille=this.List_filer.length
+      this.filtermenus = this.List_filer.slice(this.mpagination.startItem , this.mpagination.startItem+this.mpagination.nb_line);
+    }
   }
 
 }//delete_smenu_menu

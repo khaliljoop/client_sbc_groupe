@@ -12,7 +12,7 @@
 <div class="card " style="width: 20rem;">
   <h2 class="card-title">Location</h2>
   <div class="card-body">
-    <carousel>
+    <carousel [isAnimated]="true">
       <slide *ngFor="let v of v_locations;">
         <img width="50" src="assets/images/{{v.imageList[0].url}}" alt="first slide" style="display: block;  width: 100%;">
         <div class="carousel-caption d-none d-md-block">

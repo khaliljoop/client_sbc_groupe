@@ -46,13 +46,16 @@ export class AddVehiculeComponent implements OnInit {
     id_marques!:0;
     search=''
     
+    tab_taille=0
     startItem=0
-    endItem=6
-    pageReturn?:Vehicule[];
-    filterVehicules:Vehicule[]=[];
+    endItem=5
+    nb_line=5
+    pageReturn?:Vehicule[]
+    filterVehicules:Vehicule[]=[]
+    List_filer:Vehicule[]=[]
     totalItems = this.filterVehicules.length;
-    currentPage = 1;
-    smallnumPages = 0;
+    //lignes=5
+    //nbPage = 5;
   /************KKkkk */
   urlimg:string='';
   base64: String='';
@@ -325,7 +328,7 @@ export class AddVehiculeComponent implements OnInit {
       next:(values)=> {
         if(values!=null)
         this.vehicules=values;
-        //this.filterVehicules=values
+        this.tab_taille=this.vehicules.length
         this.filterVehicules = this.vehicules.slice(this.startItem, this.endItem);
         console.log("images liste "+values);
         console.log("images liste 2 "+this.vehicule);
@@ -385,21 +388,31 @@ export class AddVehiculeComponent implements OnInit {
   onMenuSelect()
   { 
   }
+  onLineSelect()
+  { 
+    this.filterVehicules = this.vehicules.slice(this.startItem , this.startItem+this.nb_line);
+  }
 
   filter(){
+    
     if(this.search==''){
-      this.filterVehicules=this.vehicules;
+      this.filterVehicules=this.vehicules.slice(this.startItem , this.startItem+this.nb_line)
+      this.tab_taille=this.vehicules.length
     }
     else{
       var _search=this.search.toLowerCase().split('é').join('e').split('è').join('e')
       this.filterVehicules=[]
+      this.List_filer=[]
       for(let v of this.vehicules){
         var matricule=v.matricule.toLowerCase().split('é').join('e').split('è').join('e')
         var code_v =v.code_vehicule.toLowerCase().split('é').join('e').split('è').join('e')
         var statut =v.statut.toLowerCase().split('é').join('e').split('è').join('e')
         if(matricule.includes(_search) || code_v.includes(_search) || statut.includes(_search))
-        this.filterVehicules.push(v)
+        this.List_filer.push(v)
+       
       }
+      this.tab_taille=this.List_filer.length
+      this.filterVehicules = this.List_filer.slice(this.startItem , this.startItem+this.nb_line)
     }
   }
   

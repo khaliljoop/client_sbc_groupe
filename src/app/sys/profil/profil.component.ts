@@ -2,6 +2,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute  } from '@angular/router';
+import { PageChangedEvent } from 'ngx-bootstrap/pagination';
+import { Mpagination } from 'src/app/model/param/mpagination.model';
 //import { ToastrService } from 'ngx-toastr';
 import { Action } from 'src/app/model/sys/action.model';
 import { Menu } from 'src/app/model/sys/menu.model';
@@ -25,7 +27,19 @@ export class ProfilComponent implements OnInit {
     ) { }
 
  
+  search=""
+  filterprofils:Profil[]=[]
+  List_filer:Profil[]=[]
+  pageReturn?:Profil[];
+  
   profil!:Profil;
+  mpagination:Mpagination={
+    tab_taille:0,
+    nb_line:5,
+    startItem:0,
+    endItem:5,
+    totalItems : this.filterprofils.length
+  }
   action!:Action;
   actions!:Action[];
   menuactions!:any[];
@@ -81,6 +95,8 @@ export class ProfilComponent implements OnInit {
     this.securiteService.getElenents(chemin).subscribe({
       next:(v)=>{
         this.profils=v;
+        this.mpagination.tab_taille=this.profils.length
+        this.filterprofils = this.profils.slice(this.mpagination.startItem, this.mpagination.endItem)
       },
       error:(e)=>alert("erreur de recuperation "+e.message),
     });
@@ -276,6 +292,37 @@ export class ProfilComponent implements OnInit {
     this.router.navigate(['/profil']);
     this.displayStyle = "none";
     this.displayStyle1 = "none";
+  }
+
+  pageChanged(event: PageChangedEvent): void {
+    this.mpagination.startItem = (event.page - 1) * event.itemsPerPage;
+    this.mpagination.endItem = event.page * event.itemsPerPage;
+    this.filterprofils = this.profils.slice(this.mpagination.startItem, this.mpagination.endItem);
+  }
+
+  onLineSelect()
+  { 
+    this.filterprofils = this.profils.slice(this.mpagination.startItem , this.mpagination.startItem+this.mpagination.nb_line);
+  }
+  filter(){
+    
+    if(this.search==''){
+      this.filterprofils=this.profils.slice(this.mpagination.startItem , this.mpagination.startItem+this.mpagination.nb_line)
+      this.mpagination.tab_taille=this.profils.length
+    }
+    else{
+      var _search=this.search.toLowerCase().split('é').join('e').split('è').join('e')
+      this.filterprofils=[]
+      this.List_filer=[]
+      for(let p of this.profils){
+        var lib=p.libelle.toLowerCase().split('é').join('e').split('è').join('e')
+        var code_v =p.code.toLowerCase().split('é').join('e').split('è').join('e')
+        if(lib.includes(_search) || code_v.includes(_search) )
+        this.List_filer.push(p)
+      }
+      this.mpagination.tab_taille=this.List_filer.length
+      this.filterprofils = this.List_filer.slice(this.mpagination.startItem , this.mpagination.startItem+this.mpagination.nb_line);
+    }
   }
 
 

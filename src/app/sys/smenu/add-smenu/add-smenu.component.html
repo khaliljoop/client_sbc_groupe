@@ -8,7 +8,30 @@
         </button>
     </div>
   </div>
-  <h2>Liste de sous menu</h2>
+  <div class="row hauteur" >
+    <div class="col-lg-5">
+    <div class="input-group">
+      <span class="input-group-text" >Afficher</span>
+      <select  [(ngModel)]="mpagination.nb_line" class="select-form" (change)="onLineSelect()" >
+        <option   value="5">5</option>
+        <option   value="10">10</option>
+        <option   value="20">20</option>
+        <option   value="50">50</option>
+        <option   value="100">100</option>
+      </select>
+      
+      <span class="input-group-text"> lignes</span>
+    </div>
+  </div>
+  <h2 class="col-lg-4">Liste de sous menus</h2>
+    <div class="col-lg-3">
+      <div class="input-group">
+        
+      <input (input)="filter()" placeholder="libelle,code,..." class="form-control" type="text" [(ngModel)]="search" name="search">
+      <span class="input-group-text"><i class="fa fa-search"></i></span>
+      </div>
+    </div>
+  </div>
   <div class="table-responsive-md ">
     <table   class="table table-striped table-bordered table-sm row-border hover">
       <thead>
@@ -20,7 +43,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let m of smenus; let i=index">
+        <tr *ngFor="let m of filtersmenus; let i=index">
           <td>{{m.id_smenu}}</td>
           <td>{{m.id_menu}}</td>
           <td>{{m.code}}</td>
@@ -37,11 +60,11 @@
       </tbody>
       <tfoot></tfoot>
     </table>
-    <pagination [boundaryLinks]="showBoundaryLinks" 
-    [directionLinks]="showDirectionLinks" 
-    [totalItems]="contentArray.length"
-    [itemsPerPage]="5"
-    (pageChanged)="pageChanged($event)"></pagination>
+    <div class="row"><!----------previousText="&lsaquo;" nextText="&rsaquo;"------------->
+      <div class="d-flex justify-content-center"><!--- [itemsPerPage]="4"----(numPages)="smallnumPages = $event"----[(ngModel)]="currentPage"--->
+        <pagination  [totalItems]="mpagination.tab_taille" [itemsPerPage]="mpagination.nb_line" previousText="Précédent" nextText="Suivant"   (pageChanged)="pageChanged($event)"></pagination>
+      </div>
+    </div>
 
   </div>
   

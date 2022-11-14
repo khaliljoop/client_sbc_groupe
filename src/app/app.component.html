@@ -8,20 +8,13 @@
     <mat-icon *ngIf="!sidenav.opened"> menu </mat-icon>
     <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
   </button>
-  <p><img src="assets/images/sbc_logo.jpg" alt="vehicule" width="90" height="60" alt="" srcset=""></p>
+  <p><img class="profile-image-toolbar" src="assets/images/sbc_logo.jpg" alt="vehicule" width="50" height="50" alt="" srcset=""></p>
   <span class="menu-spacer"></span>
   <h3 class="col-md-3">SBC Groupe</h3>
   <div class="col-md-3"></div>
     <div class="col-md-1"><i class="fa fa-bell-o fa-x"></i> <span class="notif">5</span></div>
     <div class="col-md-1"><span><i class="fa fa-comment"></i></span></div>
-    <a mat-button class="col-md-1" class="menu-butto"routerLinkActive="active" routerLink="/register">
-      <mat-icon class="mycolor">help</mat-icon>
-      <span class="mycolor">S'inscrire</span>
-    </a>
-    <a mat-button class="menu-button col-md-1 "routerLinkActive="active" ><!--(click)="onConnected()"-->
-      <mat-icon class="mycolor" >person</mat-icon>
-      <span class="mycolor">Connexion</span>
-    </a>
+    
       <ng-container>
         <div mat-buttonn [matMenuTriggerFor]="userMenu" class="vu">
           <img
@@ -101,12 +94,25 @@
   </footer>
 </mat-sidenav-container>
 <mat-menu #userMenu="matMenu">
-  <h2>Ibrahima Diop</h2>
-  <button mat-menu-item routerLink="/profile">
+  <div class="userInfoo">
+    <h2>Ibrahima Diop</h2>
+    <hr>
+  <button class="col-md-1" mat-button class="menu-button"routerLinkActive="active" routerLink="/profile">
     <mat-icon>account_circle</mat-icon>
     Profile
   </button>
   <button class="col-md-1" mat-button class="menu-button"routerLinkActive="active" routerLink="/auth">
     <mat-icon >settings_power</mat-icon>déconnecter<!--exit_to_app-->
   </button>
+  </div>
+  <hr>
+  <div class="connect">
+    <button class="col-md-1" mat-button class="menu-button"routerLinkActive="active" routerLink="/register">
+      <mat-icon>account_circle</mat-icon>
+      S'inscrire
+    </button>
+    <button class="col-md-1" mat-button class="menu-button"routerLinkActive="active" routerLink="/login">
+      <mat-icon >settings_power</mat-icon>Se connecter<!--exit_to_app-->
+    </button>
+  </div>
 </mat-menu>

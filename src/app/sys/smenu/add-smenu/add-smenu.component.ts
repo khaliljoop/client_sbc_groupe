@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { menu } from 'src/app/model/menu';
+import { Mpagination } from 'src/app/model/param/mpagination.model';
 //import { ToastrService } from 'ngx-toastr';
 import { Action } from 'src/app/model/sys/action.model';
 import { Menu } from 'src/app/model/sys/menu.model';
@@ -35,16 +36,23 @@ export class AddSmenuComponent implements OnInit {
   
   constructor(private modalService: BsModalService,private securiteService:SecuriteService,private formBuilder:FormBuilder,private route:Router) { }//private toast:ToastrService,
   /****************** */
-  contentArray: string[] = new Array(50).fill('');
-   returnedArray!: string[];
-   showBoundaryLinks: boolean = true;
-   showDirectionLinks: boolean = true;
   modalRef?: BsModalRef;
   dismissible = true;
+
+  search=""
+  filtersmenus:Smenu[]=[]
+  List_filer:Smenu[]=[]
+  mpagination:Mpagination={
+    tab_taille:0,
+    nb_line:5,
+    startItem:0,
+    endItem:5,
+    totalItems : this.filtersmenus.length
+  }
   /******************** */
   closeResult: string="";
   str!:string;
-  smenus!:Smenu[];
+  smenus:Smenu[]=[];
   profils!:Profil[];
   menus!:Menu[];
   idmenu!: Menu;
@@ -72,17 +80,7 @@ export class AddSmenuComponent implements OnInit {
     this.getElenentsP("getProfils");
     this.isAddClicked=false;
     this.isSaveAdsmenu=false;
-    this.contentArray = this.contentArray.map((v: string, i: number) => {
-      return 'Line '+ (i + 1);
-   });
-   this.returnedArray = this.contentArray.slice(0, 5);
   }
-
-  pageChanged(event: PageChangedEvent): void {
-    const startItem = (event.page - 1) * event.itemsPerPage;
-    const endItem = event.page * event.itemsPerPage;
-    this.returnedArray = this.contentArray.slice(startItem, endItem);
- }
 
   openModal(template: TemplateRef<any>) {
     this.isAddClicked=true;
@@ -116,6 +114,8 @@ export class AddSmenuComponent implements OnInit {
     this.securiteService.getElenents(chemin).subscribe({
       next:(v)=>{
         this.smenus=v;
+        this.mpagination.tab_taille=this.smenus.length
+        this.filtersmenus = this.smenus.slice(this.mpagination.startItem, this.mpagination.endItem)
       
       },
       error:(e)=>alert("erreur de recuperation "+e.message),
@@ -253,5 +253,38 @@ export class AddSmenuComponent implements OnInit {
     });
     this.isAddClicked=false;
     this.modalRef = this.modalService.show(template);
+  }
+
+  pageChanged(event: PageChangedEvent): void {
+    this.mpagination.startItem = (event.page - 1) * event.itemsPerPage;
+    this.mpagination.endItem = event.page * event.itemsPerPage;
+    this.filtersmenus = this.smenus.slice(this.mpagination.startItem, this.mpagination.endItem);
+  }
+
+  onLineSelect()
+  { 
+    this.filtersmenus = this.smenus.slice(this.mpagination.startItem , this.mpagination.startItem+this.mpagination.nb_line);
+  }
+  filter(){
+    
+    if(this.search==''){
+      this.mpagination.tab_taille=this.smenus.length
+      this.filtersmenus=this.smenus.slice(this.mpagination.startItem , this.mpagination.startItem+this.mpagination.nb_line)
+      
+    }
+    else{
+      var _search=this.search.toLowerCase().split('é').join('e').split('è').join('e')
+      this.filtersmenus=[]
+      this.List_filer=[]
+      for(let p of this.smenus){
+        var lib=p.libelle.toLowerCase().split('é').join('e').split('è').join('e')
+        var code_v =p.code.toLowerCase().split('é').join('e').split('è').join('e')
+        if(lib.includes(_search) || code_v.includes(_search) )
+        this.List_filer.push(p)
+       
+      }
+      this.mpagination.tab_taille=this.List_filer.length
+      this.filtersmenus = this.List_filer.slice(this.mpagination.startItem , this.mpagination.startItem+this.mpagination.nb_line);
+    }
   }
 }
