@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Personne } from 'src/app/model/personne.model';
 import { CompteService } from 'src/app/service/compte.service';
+import { GlobalService } from 'src/app/service/global.service';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,9 @@ export class LoginComponent implements OnInit {
     username="";
     password="";
     user!:Personne;
-    isLogin!:Boolean;
+    isLogin:Boolean=false;
+    isSubmitted:Boolean=false;
+    global!:GlobalService
 
   ngOnInit(): void {
     this.initForm();
@@ -36,6 +39,7 @@ export class LoginComponent implements OnInit {
     const formValue=this.userForm.value;
     const username=formValue['username'];
     const password=formValue['password'];
+    this.isSubmitted=true
     this.compteService.getPersonneByUsername(username).subscribe(
       {
         next:(v)=>{
@@ -44,21 +48,29 @@ export class LoginComponent implements OnInit {
             {
               this.user=v;
               sessionStorage.setItem("unique_id", v.unique_id+"");
+              sessionStorage.setItem("prenom", v.prenom+"");
+              sessionStorage.setItem("nom", v.nom+"");
+              //this.global.saveData(v.unique_id,v.prenom,v.nom)
+              this.isLogin=true
+              console.log("success")
               this.router.navigateByUrl("/");
             }
             else
             {
-              alert("username ou mot de passe incorrect");
+              this.isLogin=false
+              //alert("username ou mot de passe incorrect");
             }
           }
           else
           {
-            alert("username ou mot de passe incorrect ");
+            //alert("username ou mot de passe incorrect ");
           }
         },
         error:(e)=>alert("error serveur  "+e.message),
       }
+      
     );
+    
   }
 
   initForm(){
@@ -83,7 +95,7 @@ export class LoginComponent implements OnInit {
             if(v!=null)
             {
               this.user=v;
-              sessionStorage.setItem("unique_id", v.unique_id+"");
+              sessionStorage.setItem("unique_id", v.unique_id);
               this.router.navigateByUrl("/accueil");
             }
             else
@@ -99,6 +111,7 @@ export class LoginComponent implements OnInit {
   displayStyle = "none";
   
   openPopup() {
+    this.initForm()
     this.displayStyle = "block";
   }
   closePopup() {

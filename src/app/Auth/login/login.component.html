@@ -35,6 +35,11 @@ role="dialog"
              <button type="submit"  class="btn btn-primary" >Se connecter</button>
              <button class="btn btn-success" ><a href="/register">S'inscrire</a></button>
          </form>
+         <alert class="alert" type="danger" [dismissOnTimeout]="5000" *ngIf="isSubmitted && !isLogin">
+          <h4 class="alert-heading">Well done!</h4>
+          <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+          <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+        </alert>
         </div>
       </div>
     </div>

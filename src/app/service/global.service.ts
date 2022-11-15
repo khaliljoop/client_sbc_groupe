@@ -12,12 +12,19 @@ export class GlobalService {
   search:string='';
   userFilter:Personne[]=[];
   allUsers:Personne[]=[];
-  constructor(private modalService: BsModalService) {
-    
-  }
+  constructor(private modalService: BsModalService) {}
  
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
+  }
+
+  saveData(uid:string,prenom:string,nom:string) {
+    sessionStorage.setItem('uid',uid );
+    sessionStorage.setItem('prenom',prenom);
+    sessionStorage.setItem('nom', nom);
+  }
+  getData() {
+    return sessionStorage.getItem('prenom');
   }
 
   filter(){

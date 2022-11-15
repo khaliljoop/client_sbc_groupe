@@ -8,6 +8,8 @@ import { delay, filter, Subscription } from 'rxjs';
 import { menu } from './model/menu';
 import { NavItem } from './model/nav-item';
 import { MediaObserver, MediaChange } from '@angular/flex-layout';
+import { Personne } from './model/personne.model';
+import { GlobalService } from './service/global.service';
 
 @UntilDestroy()
 @Component({
@@ -21,6 +23,23 @@ export class AppComponent implements OnInit,OnDestroy{
   opened: boolean = true;
   mediaWatcher!: Subscription;
   public menu: NavItem[] = menu;
+  global_s!:GlobalService
+  uid=''
+  prenom=sessionStorage.getItem('prenom')
+  nom=''
+  user:Personne={
+    id_personne:'',
+    unique_id:'k',
+    prenom:'',
+    nom:'',
+    adresse:'',
+    email:'',
+    etat_compte:0,
+    telephone:'',
+    sexe:'',
+    username:'',
+    password:''
+  }
 
     constructor(private media: MediaObserver,private observer: BreakpointObserver, private router: Router) {
         /*this.mediaWatcher = this.media.media$.subscribe((mediaChange: MediaChange) => {
@@ -30,6 +49,7 @@ export class AppComponent implements OnInit,OnDestroy{
     ngOnInit(): void {
      // this.base_url=environment.localUrl;
       this.handleMediaChange();
+      //this.prenom=this.global_s.getData()
     }
 
     private handleMediaChange() {

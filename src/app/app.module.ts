@@ -34,7 +34,8 @@ import { AddSmenuComponent } from './sys/smenu/add-smenu/add-smenu.component';
 import { LoginComponent } from './Auth/login/login.component'; 
 import { MatMenuModule } from '@angular/material/menu';
 import { CreateCountComponent } from './Auth/create-count/create-count.component';
-import { UserComponent } from './sys/user/user.component'; 
+import { UserComponent } from './sys/user/user.component';
+import { ChatComponent } from './chat/chat.component'; 
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { UserComponent } from './sys/user/user.component';
     AddSmenuComponent,
     LoginComponent,
     CreateCountComponent,
-    UserComponent
+    UserComponent,
+    ChatComponent
   ],
   imports: [
     BrowserModule,
@@ -83,4 +85,4 @@ import { UserComponent } from './sys/user/user.component';
     { provide: MatDialogRef, useValue: {} }],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

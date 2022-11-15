@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { CreateCountComponent } from './Auth/create-count/create-count.component';
 import { LoginComponent } from './Auth/login/login.component';
 import { AccueilComponent } from './home/accueil/accueil.component';
+import { AuthGardGuard } from './model/auth-gard.guard';
 import { ParametreComponent } from './parametre/parametre.component';
 import { AddMenuComponent } from './sys/menu/add-menu/add-menu.component';
 import { ProfilComponent } from './sys/profil/profil.component';
@@ -13,7 +14,7 @@ import { AddVehiculeComponent } from './vehicule/add-vehicule/add-vehicule.compo
 const routes: Routes = [
   {path: '', component:AccueilComponent},
   {path:'param',component:ParametreComponent},
-  {path:'vehicule',component:AddVehiculeComponent},
+  {path:'vehicule',component:AddVehiculeComponent,canActivate:[AuthGardGuard]},
   {path:'menu',component:AddMenuComponent},
   {path:'smenu',component:AddSmenuComponent},
   {path:'profil',component:ProfilComponent},
