@@ -52,6 +52,10 @@ export class AppComponent implements OnInit,OnDestroy{
       //this.prenom=this.global_s.getData()
     }
 
+    onChat(){
+      this.router.navigate(['/chat'])
+    }
+
     private handleMediaChange() {
         if (this.media.isActive('lt-md')) {
             this.opened = false;

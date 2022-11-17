@@ -3,8 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Personne } from 'src/app/model/personne.model';
+import { Profil } from 'src/app/model/sys/profil.model';
 import { CompteService } from 'src/app/service/compte.service';
 import { GlobalService } from 'src/app/service/global.service';
+import { SecuriteService } from 'src/app/service/securite.service';
 
 @Component({
   selector: 'app-login',
@@ -16,11 +18,14 @@ export class LoginComponent implements OnInit {
   constructor(
     private formBuilder:FormBuilder,
     private compteService: CompteService,
-    private router :Router) { }
+    private router :Router,
+    private securiteService:SecuriteService
+    ) { }
 
     userForm! : FormGroup;
     username="";
     password="";
+    profil!:Profil
     user!:Personne;
     isLogin:Boolean=false;
     isSubmitted:Boolean=false;
@@ -28,6 +33,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
+    
   }
 
   connect(){
@@ -47,9 +53,20 @@ export class LoginComponent implements OnInit {
             if(this.compteService.iScorrectPass(this.compteService.decrypt_pwd(v.password),password))
             {
               this.user=v;
-              sessionStorage.setItem("unique_id", v.unique_id+"");
+              sessionStorage.setItem("unique_id", this.user.unique_id+"");
               sessionStorage.setItem("prenom", v.prenom+"");
               sessionStorage.setItem("nom", v.nom+"");
+              this.securiteService.getElementById("getProfilByUid",this.user.unique_id).subscribe({
+                next:(p)=>{
+                  this.profil=p
+                  console.log("profile "+this.profil.code)
+                  sessionStorage.setItem("profil", this.profil.code);
+                },
+                error:(e)=>{
+                  console.log("erreur role "+e.message)
+                }
+
+              })
               //this.global.saveData(v.unique_id,v.prenom,v.nom)
               this.isLogin=true
               console.log("success")
@@ -94,9 +111,23 @@ export class LoginComponent implements OnInit {
         next:(v)=>{
             if(v!=null)
             {
+
               this.user=v;
-              sessionStorage.setItem("unique_id", v.unique_id);
-              this.router.navigateByUrl("/accueil");
+              console.log("uid code "+this.user.unique_id)
+              sessionStorage.setItem("unique_id", this.user.unique_id);
+              this.securiteService.getElementById("getProfilByUid",this.user.unique_id).subscribe({
+                next:(p)=>{
+                  this.profil=p
+                  console.log("profile "+this.profil.code)
+                  sessionStorage.setItem("profil", this.profil.code);
+                  this.router.navigateByUrl("/accueil");
+                },
+                error:(e)=>{
+                  console.log("erreur role "+e.message)
+                }
+
+              })
+              
             }
             else
             {

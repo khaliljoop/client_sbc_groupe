@@ -13,32 +13,36 @@ private apiServiceUrl=environment.baseUrl;
 private key='kh@00lil';
 private unique_id="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
 public isAuth=false;
-constructor (private http:HttpClient){}
+constructor (private http?:HttpClient){}
 
 
 public getPersonnes(): Observable<Personne[]>{
-    return this.http.get<Personne[]>(`${this.apiServiceUrl}getPersonnes`);
+    return this.http!.get<Personne[]>(`${this.apiServiceUrl}getPersonnes`);
 }
 
 public addPersonne(personne: any): Observable<any>{
-    return this.http.post(`${this.apiServiceUrl}personne/add`, personne);
+    return this.http!.post(`${this.apiServiceUrl}personne/add`, personne);
 }
 
 public becomeAgent(idpers: String, personne: Personne): Observable<Personne>{
-    return this.http.put<Personne> (`${this.apiServiceUrl}/personnes/`+idpers, personne);
+    return this.http!.put<Personne> (`${this.apiServiceUrl}/personnes/`+idpers, personne);
 }
 
 public getPersonneByLogin(login: String, pwd: String): Observable<Personne>{
-    return this.http.get<Personne>(`${this.apiServiceUrl}personne/findLogin?username=`+login+`&password=`+pwd);
+    return this.http!.get<Personne>(`${this.apiServiceUrl}personne/findLogin?username=`+login+`&password=`+pwd);
 }
 
 public getPersonneByUsername(u: String): Observable<Personne>{
-    return this.http.get<Personne>(`${this.apiServiceUrl}getLoginPersonne?username=`+u);
+    return this.http!.get<Personne>(`${this.apiServiceUrl}getLoginPersonne?username=`+u);
+}
+
+public getAssistant(): Observable<Personne>{
+  return this.http!.get<Personne>(`${this.apiServiceUrl}getAssistant`)
 }
 
 
 public getUserById(idpers: String): Observable<Personne>{
-  return this.http.get<Personne>(`${this.apiServiceUrl}personne/`+idpers);
+  return this.http!.get<Personne>(`${this.apiServiceUrl}personne/`+idpers);
 }
 /**
  * pour controler l'acces direct des appareil

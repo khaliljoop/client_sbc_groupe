@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CreateCountComponent } from './Auth/create-count/create-count.component';
 import { LoginComponent } from './Auth/login/login.component';
+import { ChatComponent } from './chat/chat.component';
 import { AccueilComponent } from './home/accueil/accueil.component';
 import { AuthGardGuard } from './model/auth-gard.guard';
 import { ParametreComponent } from './parametre/parametre.component';
@@ -20,7 +21,8 @@ const routes: Routes = [
   {path:'profil',component:ProfilComponent},
   {path:'login',component:LoginComponent},
   {path:'register',component:CreateCountComponent},
-  {path:'users',component:UserComponent}
+  {path:'users',component:UserComponent},
+  {path:'chat',component:ChatComponent}
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
