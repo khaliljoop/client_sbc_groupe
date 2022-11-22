@@ -85,9 +85,9 @@
           <form action=""  [formGroup]="userForm" (ngSubmit)="updateProfil(personne.unique_id)" ><!---getUsername()--->
             <div class="form-group mb-5">
                <div *ngFor="let p of profils">
-                  <input id="enum_answer_{{p.code}}" formControlName="user_profil"  value='{{p.id_profil}}' type="radio" name="profil" [checked]="p.id_profil==id_profil" (change)="changeProfil($event)">
-                  <span></span>
-                  <label class="radio inline" for="enum_answer_{{p.code}}">{{p.libelle}}  </label>
+                  <input class="rdio" id="enum_answer_{{p.code}}" formControlName="user_profil"  value='{{p.id_profil}}' type="radio" name="profil" [checked]="p.id_profil==id_profil" (change)="changeProfil($event)">
+                  
+                  <label class="radio inline" for="enum_answer_{{p.code}}"><span class="roles">{{p.libelle}}</span>  </label>
               </div>
             </div>
              <button type="submit"  class="btn btn-success" >Enregistrer</button>
