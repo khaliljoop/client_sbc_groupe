@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
   }
 
   connect(){
-    this.router.navigateByUrl("/addmenu");
+    this.router.navigate(["/addmenu"]/*,{ initialNavigation : false }*/);
   }
 
   getUsername()
@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
             {
               this.user=v;
               sessionStorage.setItem("unique_id", this.user.unique_id+"");
-              sessionStorage.setItem("prenom", v.prenom+"");
+              sessionStorage.setItem("prenom", v.prenom+" "+v.nom);
               sessionStorage.setItem("nom", v.nom+"");
               this.securiteService.getElementById("getProfilByUid",this.user.unique_id).subscribe({
                 next:(p)=>{
@@ -89,7 +89,6 @@ export class LoginComponent implements OnInit {
     );
     
   }
-
   initForm(){
     this.userForm=this.formBuilder.group(
       {

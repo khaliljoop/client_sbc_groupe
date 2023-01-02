@@ -33,6 +33,7 @@
                 <th scope="col">Mail</th>
                 <th scope="col">Identifiant</th>
                 <th scope="col" colspan="2">profile</th>
+                <th scope="col" class="btn_action"></th>
               </tr>
             </thead>
             <tbody>
@@ -45,9 +46,11 @@
                 <td>{{u.personne.unique_id}}</td>
                 <td>{{u.profil.libelle}}</td>
                 <td (click)="openPopup(u.personne.id_personne,u.profil.id_profil)"><i  class="vu fa fa-eye fa-2x"></i></td>
-                <td><button (click)="editeUser(u.personne.id_personne)"  class="btn btn-sm"><mat-icon style="color: blue ;" class="vu" >edit</mat-icon></button></td>
+                <td>
+                  <button (click)="editeUser(u.personne.id_personne)"  class="btn btn-sm"><mat-icon style="color: blue ;" class="vu" >edit</mat-icon>
+                  </button>
                 
-                <td><button   mwlConfirmationPopover popoverTitle="Suppression"
+                <button   mwlConfirmationPopover popoverTitle="Suppression"
                   popoverMessage="Souhaiter-vous vraiment  supprimer le menu {{u.personne.prenom}}  {{u.personne.nom}}?" 
                   (confirm)="deleUser(u.personne.id_personne)" placement="auto" container='body' 
                   class="btn  btn-sm" ><i style="color: red;" class="fa fa-trash-o fa-2x"></i>

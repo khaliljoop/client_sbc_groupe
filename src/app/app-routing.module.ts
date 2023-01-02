@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { NavigationStart, Router, RouterModule, Routes } from '@angular/router';
 import { CreateCountComponent } from './Auth/create-count/create-count.component';
 import { LoginComponent } from './Auth/login/login.component';
 import { ChatComponent } from './chat/chat.component';
@@ -14,6 +14,7 @@ import { AddVehiculeComponent } from './vehicule/add-vehicule/add-vehicule.compo
 
 const routes: Routes = [
   {path: '', component:AccueilComponent},
+  {path: 'sbc', component:AccueilComponent},
   {path:'param',component:ParametreComponent},
   {path:'vehicule',component:AddVehiculeComponent,canActivate:[AuthGardGuard]},
   {path:'menu',component:AddMenuComponent},
@@ -28,4 +29,14 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+  constructor(private router: Router) {
+    this.router.events.subscribe(routerEvent => {
+        if (routerEvent instanceof NavigationStart) {
+            if (routerEvent.url == "/") {
+                this.router.navigate(["sbc"], {skipLocationChange: true})
+            }
+        }
+    });
+}
+}

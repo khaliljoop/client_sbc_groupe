@@ -22,7 +22,6 @@
               <option   value="50">50</option>
               <option   value="100">100</option>
             </select>
-            
             <span class="input-group-text"> lignes</span>
           </div>
         </div>
@@ -41,6 +40,7 @@
                 <th scope="col">#</th>
                 <th scope="col">Code</th>
                 <th scope="col">libelle menu</th>
+                <th scope="col" class="btn_action"></th>
               </tr>
             </thead>
             <tbody>
@@ -48,13 +48,13 @@
                 <td>{{m.id_menu}}</td>
                 <td>{{m.code}}</td>
                 <td>{{m.libelle}}</td>
-                <td><button (click)="edite_menu(m.id_menu,template)"   class="btn  btn-sm"><mat-icon style="color:blue ;" >edit</mat-icon></button></td>
+                <td><button (click)="edite_menu(m.id_menu,template)"   class="btn  btn-sm"><mat-icon style="color:blue ;" >edit</mat-icon></button>
                 
-                <td><button   mwlConfirmationPopover popoverTitle="Suppression"
+                <button   mwlConfirmationPopover popoverTitle="Suppression"
                   popoverMessage="Souhaiter-vous vraiment  supprimer le menu {{m.libelle}} ?" 
                   (confirm)="deleMenu(m.id_menu)" placement="auto" container='body' 
                   class="btn btn-sm" ><i style="color: red;" class="fa fa-trash-o fa-2x"></i>
-                </button></td> 
+                </button></td>
               </tr>
             </tbody>
           </table>

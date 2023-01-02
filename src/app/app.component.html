@@ -14,6 +14,20 @@
   <div class="col-md-3"></div>
     <div class="col-md-1"><i class="fa fa-bell-o fa-x"></i> <span class="notif">5</span></div>
     <div class="col-md-1"><span><i (click)="onChat()" class="fa fa-comment"></i></span></div>
+
+    <!--<ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">About </a></li>
+      <li>
+          <a href="#">Products ▾</a>
+          <ul class="dropdown">
+              <li><a href="#">Laptops</a></li>
+              <li><a href="#">Monitors</a></li>
+              <li><a href="#">Printers</a></li>
+          </ul>
+      </li>
+      <li><a href="#">Contact</a></li>
+  </ul>-->
     
       <ng-container>
         <div mat-buttonn [matMenuTriggerFor]="userMenu" class="vu">
@@ -93,7 +107,7 @@
     <p>... with variable height</p>
   </footer>
 </mat-sidenav-container>
-<mat-menu #userMenu="matMenu">
+<mat-menu #userMenu="matMenu" class="items">
   <div class="userInfoo">
     <h2>{{prenom}}</h2>
     <hr>
@@ -111,7 +125,7 @@
       <mat-icon>account_circle</mat-icon>
       S'inscrire
     </button>
-    <button class="col-md-1" mat-button class="menu-button"routerLinkActive="active" routerLink="/login">
+    <button class="col-md-1" mat-button class="menu-button"routerLinkActive="active" [skipLocationChange]="true" routerLink="/login">
       <mat-icon >settings_power</mat-icon>Se connecter<!--exit_to_app-->
     </button>
   </div>
